@@ -1,0 +1,24 @@
+{
+  "name": "vidget",
+  "version": "1.0.0",
+  "description": "Dynamic UI",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && babel src --extensions '.ts' --out-dir dist",
+    "start": "live-server --port=3000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "live-server": "^1.2.2",
+    "typescript": "^5.7.3",
+     "lite-server": "^2.6.1"
+  }
+ 
+}

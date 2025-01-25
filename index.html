@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SPA with TypeScript</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+    <div id="container">
+        <div id="left-pane">
+          <ul id="item-list">
+            <!-- Items with checkboxes will be added dynamically -->
+          </ul>
+        </div>
+        <div id="right-pane">
+          <div id="interactive-div">
+            Station name <br>
+            Station adress
+
+            <div id="buttons-container">
+              <!-- Buttons will be added dynamically -->
+            </div>
+          </div>
+          <button id="generate-html-button">Generate HTML</button>
+          <textarea id="generated-html" readonly></textarea>
+        </div>
+      </div>
+      <script src="./dist/index.js" type="module"></script>
+</body>
+</html>
