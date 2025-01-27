@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && babel src --extensions '.ts' --out-dir dist",
-    "start": "live-server --port=3000"
+    "start": "yarn build && live-server --port=3000"
   },
   "keywords": [],
   "author": "",
