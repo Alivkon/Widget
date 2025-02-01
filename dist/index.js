@@ -10,8 +10,9 @@ var houtputDiv = document.getElementById('hi-output');
 var wInput = document.getElementById('w-Input');
 var woutputDiv = document.getElementById('w-output');
 var generatedHtmlTextarea = document.getElementById('generated-html');
-var buttonData = ['Connect2', 'Disconnect', 'Reset', 'Available', 'Preparing', 'Charging', 'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 'Plug`n`Charge', 'EmergencyButton'];
+var buttonData = ['Connect', 'Disconnect', 'Reset', 'Available', 'Preparing', 'Charging', 'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 'Plug`n`Charge', 'EmergencyButton'];
 var widthInteractiveDiv = interactiveDiv.style.width;
+interactiveDiv.style.width = '300';
 buttonData.forEach(function (text, index) {
   // Add button elements to the interactive div
   var button = document.createElement('button');

@@ -14,6 +14,7 @@ var buttonData = [
   'Plug`n`Charge', 'EmergencyButton'
 ];
 var widthInteractiveDiv = interactiveDiv.style.width;
+
 buttonData.forEach((text, index) => {
   // Add button elements to the interactive div
   const button = document.createElement('button');
