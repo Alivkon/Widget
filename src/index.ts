@@ -14,6 +14,8 @@ var buttonData = [
   'Plug`n`Charge', 'EmergencyButton'
 ];
 var widthInteractiveDiv = interactiveDiv.style.width;
+hiInput.style.width = "100px";
+wInput.style.width = "100px";
 
 buttonData.forEach((text, index) => {
   // Add button elements to the interactive div
@@ -113,3 +115,65 @@ wInput.addEventListener('input', () => {
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width=wnumberValue+'px'
 });
+// Dropdown
+
+function addDropdownWithTextField(leftPaneId: string): void {
+  // Ищем левую панель
+  const leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+      console.error(`Element with ID '${leftPaneId}' not found.`);
+      return;
+  }
+
+  // Создаём контейнер для выпадающего списка и текстового поля
+  const container = document.createElement("div");
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.marginBottom = "20px";
+
+  // Создаём выпадающий список
+  const dropdown = document.createElement("select");
+  dropdown.style.marginBottom = "10px";
+  dropdown.style.width = "100px";
+
+  // Слова для выпадающего списка
+  const options = ["row", "column", "row-reverse", "column-reverse"];
+  options.forEach(option => {
+      const opt = document.createElement("option");
+      opt.value = option;
+      opt.textContent = option;
+      dropdown.appendChild(opt);
+  });
+
+  // Создаём текстовое поле
+  const textField = document.createElement("input");
+  textField.type = "text";
+  textField.readOnly = true; // Запретить редактирование текста вручную
+  textField.style.padding = "5px";
+  textField.style.border = "1px solid #ccc";
+  textField.style.borderRadius = "5px";
+  textField.style.width = "100px";
+
+  // Обработчик изменений для выпадающего списка
+  dropdown.addEventListener("change", () => {
+      textField.value = dropdown.value; // Обновляем текстовое поле при выборе
+      const buttonsContainer = document.getElementById('buttons-container');
+      if (buttonsContainer) {
+          buttonsContainer.style.display = dropdown.value;
+      } else {
+          console.error('Buttons container not found');
+      }
+  });
+
+  // Инициализируем текстовое поле первым значением
+  textField.value = dropdown.value;
+
+  // Добавляем элементы в контейнер, а затем в левую панель
+  container.appendChild(dropdown);
+  container.appendChild(textField);
+  leftPane.appendChild(container);
+
+}
+
+// Вызов функции для добавления списка и текстового поля в левую панель
+addDropdownWithTextField("left-pane");
