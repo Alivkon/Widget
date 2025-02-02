@@ -107,7 +107,7 @@ wInput.addEventListener('input', function () {
 });
 // Dropdown
 
-function addDropdownWithTextField(leftPaneId) {
+function addDropdownDisplay(leftPaneId) {
   // Ищем левую панель
   var leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
@@ -127,7 +127,7 @@ function addDropdownWithTextField(leftPaneId) {
   dropdown.style.width = "100px";
 
   // Слова для выпадающего списка
-  var options = ["row", "column", "row-reverse", "column-reverse"];
+  var options = ["flex", "block", "none", "inline-block"];
   options.forEach(function (option) {
     var opt = document.createElement("option");
     opt.value = option;
@@ -138,7 +138,7 @@ function addDropdownWithTextField(leftPaneId) {
   // Создаём текстовое поле
   var textField = document.createElement("input");
   textField.type = "text";
-  textField.readOnly = true; // Запретить редактирование текста вручную
+  textField.readOnly = true;
   textField.style.padding = "5px";
   textField.style.border = "1px solid #ccc";
   textField.style.borderRadius = "5px";
@@ -149,6 +149,7 @@ function addDropdownWithTextField(leftPaneId) {
     textField.value = dropdown.value; // Обновляем текстовое поле при выборе
     var buttonsContainer = document.getElementById('buttons-container');
     if (buttonsContainer) {
+      // Устанавливаем стиль display для buttons-container
       buttonsContainer.style.display = dropdown.value;
     } else {
       console.error('Buttons container not found');
@@ -165,4 +166,52 @@ function addDropdownWithTextField(leftPaneId) {
 }
 
 // Вызов функции для добавления списка и текстового поля в левую панель
-addDropdownWithTextField("left-pane");
+addDropdownDisplay("left-pane");
+function addAlignmentDropdown(leftPaneId) {
+  // Находим левую панель
+  var leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+    console.error("Element with ID '".concat(leftPaneId, "' not found."));
+    return;
+  }
+
+  // Создаем контейнер для выпадающего списка
+  var container = document.createElement("div");
+  container.style.marginBottom = "20px";
+
+  // Создаем выпадающий список
+  var dropdown = document.createElement("select");
+  dropdown.style.width = "200px";
+  dropdown.style.padding = "5px";
+  dropdown.style.marginBottom = "10px";
+
+  // Добавляем варианты в выпадающий список
+  var options = ["row", "column"];
+  options.forEach(function (option) {
+    var opt = document.createElement("option");
+    opt.value = option;
+    opt.textContent = option === "row" ? "По горизонтали" : "По вертикали";
+    dropdown.appendChild(opt);
+  });
+
+  // Добавляем обработчик события для изменения выравнивания
+  dropdown.addEventListener("change", function () {
+    var buttonsContainer = document.getElementById("buttons-container");
+    if (buttonsContainer) {
+      buttonsContainer.style.flexDirection = dropdown.value;
+    } else {
+      console.error("Buttons container not found");
+    }
+  });
+
+  // Инициализируем начальное значение
+  var initialOption = options[0];
+  dropdown.value = initialOption;
+
+  // Добавляем выпадающий список в контейнер и контейнер в левую панель
+  container.appendChild(dropdown);
+  leftPane.appendChild(container);
+}
+
+// Вызываем функцию для добавления выпадающего списка
+addAlignmentDropdown("left-pane");
