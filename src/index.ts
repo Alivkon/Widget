@@ -117,7 +117,7 @@ wInput.addEventListener('input', () => {
 });
 // Dropdown
 
-function addDropdownDisplay(leftPaneId: string): void {
+function addDisplayDropdown(leftPaneId: string): void {
   // Ищем левую панель
   const leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
@@ -177,7 +177,7 @@ function addDropdownDisplay(leftPaneId: string): void {
 }
 
 // Вызов функции для добавления списка и текстового поля в левую панель
-addDropdownDisplay("left-pane");
+addDisplayDropdown("left-pane");
 
 
 
