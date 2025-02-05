@@ -72,11 +72,9 @@ generateHtmlButton.addEventListener('click', () => {
     }
   });
 
-// Добавляем обработчик события 'input'. Это событие срабатывает каждый раз,
-// когда значение в поле ввода изменяется.
+// Добавляем обработчик события 'input'. 
 hiInput.addEventListener('input', () => {
-    // Получаем текущее значение из поля ввода. Значение всегда возвращается 
-    // как строка.
+    // Получаем текущее значение из поля ввода. 
     let hi_inputValue = hiInput.value;
   //  Проверяем, не пустое ли поле ввода. Если пустое, ничего не делаем.
     if (hi_inputValue === "") {
@@ -175,11 +173,7 @@ function addDisplayDropdown(leftPaneId: string): void {
   leftPane.appendChild(container);
 
 }
-
-// Вызов функции для добавления списка и текстового поля в левую панель
 addDisplayDropdown("left-pane");
-
-
 
 function addAlignmentDropdown(leftPaneId: string): void {
   // Находим левую панель
@@ -226,6 +220,131 @@ function addAlignmentDropdown(leftPaneId: string): void {
   container.appendChild(dropdown);
   leftPane.appendChild(container);
 }
-
-// Вызываем функцию для добавления выпадающего списка
 addAlignmentDropdown("left-pane");
+
+function addFloatDropdown(leftPaneId: string): void {
+  // Ищем левую панель
+  const leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+      console.error(`Element with ID '${leftPaneId}' not found.`);
+      return;
+  }
+
+  // Создаём контейнер для выпадающего списка и текстового поля
+  const container = document.createElement("div");
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.marginBottom = "20px";
+
+  // Создаём выпадающий список
+  const dropdown = document.createElement("select");
+  dropdown.style.marginBottom = "10px";
+  dropdown.style.width = "100px";
+
+  // Слова для выпадающего списка
+  const options = ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
+  options.forEach(option => {
+      const opt = document.createElement("option");
+      opt.value = option;
+      opt.textContent = option;
+      dropdown.appendChild(opt);
+  });
+
+  // Создаём текстовое поле
+  const textField = document.createElement("input");
+  textField.type = "text";
+  textField.readOnly = true;
+  textField.style.padding = "5px";
+  textField.style.border = "1px solid #ccc";
+  textField.style.borderRadius = "5px";
+  textField.style.width = "100px";
+
+  // Обработчик изменений для выпадающего списка
+  dropdown.addEventListener("change", () => {
+      textField.value = dropdown.value; // Обновляем текстовое поле при выборе
+      const buttonsContainer = document.getElementById('buttons-container');
+      if (buttonsContainer) {
+          buttonsContainer.style.writingMode = dropdown.value;
+      } else {
+          console.error('Buttons container not found');
+      }
+  });
+
+  // Инициализируем текстовое поле первым значением
+  textField.value = dropdown.value;
+
+  // Добавляем элементы в контейнер, а затем в левую панель
+  container.appendChild(dropdown);
+  container.appendChild(textField);
+  leftPane.appendChild(container);
+
+}
+addFloatDropdown("left-pane");
+
+// Функция для создания чекбокса
+function createCheckbox(leftPaneId: string): void {
+  // Ищем левую панель
+  const leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+    console.error(`Element with ID '${leftPaneId}' not found.`);
+    return;
+  }
+
+  // Создаем контейнер для чекбокса
+  const container = document.createElement('div');
+  container.style.display = "flex-inline";
+  container.style.flexDirection = "column";
+  container.style.marginBottom = '20px';
+
+  // Создаем чекбокс
+  const checkbox = document.createElement('input');
+  //const checkbox = document.createElement('select');  
+  checkbox.type = 'checkbox';
+  checkbox.id = 'customCheckbox';
+  checkbox.checked = false; // Начальное состояние
+
+  // Добавляем обработчик события для изменения состояния чекбокса
+  checkbox.addEventListener('change', () => {
+    updateTextField(checkbox.checked);
+  });
+    // Функция для создания текстового поля
+  const textField = document.createElement('p');
+
+  textField.id = 'textOutput';
+ // Добавляем контейнер в левую панель
+  if (leftPane) {
+    leftPane.appendChild(container);
+  }
+ textField.textContent = 'Grid';
+  // Добавляем чекбокс и текстовое поле в контейнер
+  container.appendChild(checkbox);
+  container.appendChild(textField);
+}
+// Jбновлениt текстового поля в зависимости от состояния чекбокса
+function updateTextField(isChecked: boolean): void {
+  const textField = document.getElementById('textOutput') as HTMLParagraphElement;
+  const buttonContainer = document.getElementById('buttons-container');
+  // Пример логики: изменяем текст в зависимости от состояния чекбокса
+  if (isChecked) {
+    textField.textContent = 'Flexbox';
+
+    if (buttonContainer) {
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.flexDirection = "direction";
+        buttonContainer.style.justifyContent = "justifyContent";
+        buttonContainer.style.alignItems = "alignItems";
+    } else {
+        console.error('Buttons container not found');
+    }
+  } else {
+      textField.textContent = 'Grid';
+      if (buttonContainer) {
+        buttonContainer.style.display = 'grid';
+        buttonContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(100px, 1fr))';
+
+    } else {
+        console.error('Buttons container not found');
+    }
+  }
+}
+createCheckbox("left-pane");
