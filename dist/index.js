@@ -107,8 +107,8 @@ wInput.addEventListener('input', function () {
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width = wnumberValue + 'px';
 });
-// Dropdown
 
+//display ["flex","grid", "block", "none", "inline-block"];
 function addDisplayDropdown(leftPaneId) {
   // Ищем левую панель
   var leftPane = document.getElementById(leftPaneId);
@@ -129,7 +129,7 @@ function addDisplayDropdown(leftPaneId) {
   dropdown.style.width = "100px";
 
   // Слова для выпадающего списка
-  var options = ["flex", "block", "none", "inline-block"];
+  var options = ["flex", "grid", "block", "none", "inline-block"];
   options.forEach(function (option) {
     var opt = document.createElement("option");
     opt.value = option;
@@ -167,7 +167,8 @@ function addDisplayDropdown(leftPaneId) {
   leftPane.appendChild(container);
 }
 addDisplayDropdown("left-pane");
-function addAlignmentDropdown(leftPaneId) {
+//flex-direction ["row", "row-reverse", "column", "column-reverse"];
+function addFlexDirectionDropdown(leftPaneId) {
   // Находим левую панель
   var leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
@@ -178,6 +179,7 @@ function addAlignmentDropdown(leftPaneId) {
   // Создаем контейнер для выпадающего списка
   var container = document.createElement("div");
   container.style.marginBottom = "20px";
+  container.style.display = "flex";
 
   // Создаем выпадающий список
   var dropdown = document.createElement("select");
@@ -186,19 +188,40 @@ function addAlignmentDropdown(leftPaneId) {
   dropdown.style.marginBottom = "10px";
 
   // Добавляем варианты в выпадающий список
-  var options = ["row", "column"];
+  var options = ["row", "row-reverse", "column", "column-reverse"];
   options.forEach(function (option) {
     var opt = document.createElement("option");
     opt.value = option;
-    opt.textContent = option === "row" ? "По горизонтали" : "По вертикали";
+    switch (option) {
+      case "row":
+        opt.textContent = "Горизонтально";
+        break;
+      case "row-reverse":
+        opt.textContent = "Горизонтально (обратно)";
+        break;
+      case "column":
+        opt.textContent = "Вертикально";
+        break;
+      case "column-reverse":
+        opt.textContent = "Вертикально (обратно)";
+        break;
+    }
     dropdown.appendChild(opt);
   });
+  var textHorizontAlign = document.createElement('p');
+  textHorizontAlign.id = 'textOutput';
+  // Добавляем контейнер в левую панель
+  if (leftPane) {
+    leftPane.appendChild(container);
+  }
+  textHorizontAlign.textContent = dropdown.value;
 
   // Добавляем обработчик события для изменения выравнивания
   dropdown.addEventListener("change", function () {
     var buttonsContainer = document.getElementById("buttons-container");
     if (buttonsContainer) {
       buttonsContainer.style.flexDirection = dropdown.value;
+      textHorizontAlign.textContent = dropdown.value;
     } else {
       console.error("Buttons container not found");
     }
@@ -210,10 +233,13 @@ function addAlignmentDropdown(leftPaneId) {
 
   // Добавляем выпадающий список в контейнер и контейнер в левую панель
   container.appendChild(dropdown);
+  container.appendChild(textHorizontAlign);
   leftPane.appendChild(container);
 }
-addAlignmentDropdown("left-pane");
-function addFloatDropdown(leftPaneId) {
+addFlexDirectionDropdown("left-pane");
+
+//writingMode ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
+function addWritingModeDropdown(leftPaneId) {
   // Ищем левую панель
   var leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
@@ -269,7 +295,8 @@ function addFloatDropdown(leftPaneId) {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-addFloatDropdown("left-pane");
+addWritingModeDropdown("left-pane");
+//justifyContent ["flex-start", "center", "flex-end", "space-between"];
 function addJustifyHorizontalDropdown(leftPaneId) {
   // Ищем левую панель
   var leftPane = document.getElementById(leftPaneId);
@@ -402,3 +429,4 @@ function addJustifyVerticalDropdown(leftPaneId) {
   leftPane.appendChild(container);
 }
 addJustifyVerticalDropdown("left-pane");
+addDisplayDropdown("left-pane");

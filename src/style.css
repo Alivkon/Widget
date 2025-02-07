@@ -42,6 +42,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: auto;
   }
   
   #interactive-div input {
@@ -52,6 +53,7 @@ body {
   
   #buttons-container button {
     margin: 5px;
+
   }
   
   #generate-html-button {

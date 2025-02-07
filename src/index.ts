@@ -118,8 +118,8 @@ wInput.addEventListener('input', () => {
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width=wnumberValue+'px'
 });
-// Dropdown
 
+//display ["flex","grid", "block", "none", "inline-block"];
 function addDisplayDropdown(leftPaneId: string): void {
   // Ищем левую панель
   const leftPane = document.getElementById(leftPaneId);
@@ -140,7 +140,7 @@ function addDisplayDropdown(leftPaneId: string): void {
   dropdown.style.width = "100px";
 
   // Слова для выпадающего списка
-  const options = ["flex", "block", "none", "inline-block"];
+  const options = ["flex","grid", "block", "none", "inline-block"];
   options.forEach(option => {
       const opt = document.createElement("option");
       opt.value = option;
@@ -179,8 +179,8 @@ function addDisplayDropdown(leftPaneId: string): void {
 
 }
 addDisplayDropdown("left-pane");
-
-function addAlignmentDropdown(leftPaneId: string): void {
+//flex-direction ["row", "row-reverse", "column", "column-reverse"];
+function addFlexDirectionDropdown(leftPaneId: string): void {
   // Находим левую панель
   const leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
@@ -191,6 +191,7 @@ function addAlignmentDropdown(leftPaneId: string): void {
   // Создаем контейнер для выпадающего списка
   const container = document.createElement("div");
   container.style.marginBottom = "20px";
+  container.style.display = "flex";
 
   // Создаем выпадающий список
   const dropdown = document.createElement("select");
@@ -199,19 +200,42 @@ function addAlignmentDropdown(leftPaneId: string): void {
   dropdown.style.marginBottom = "10px";
 
   // Добавляем варианты в выпадающий список
-  const options = ["row", "column"];
+  const options = ["row", "row-reverse", "column", "column-reverse"];
   options.forEach(option => {
     const opt = document.createElement("option");
     opt.value = option;
-    opt.textContent = option === "row" ? "По горизонтали" : "По вертикали";
+    switch (option) {
+      case "row":
+        opt.textContent = "Горизонтально";
+        break;
+      case "row-reverse":
+        opt.textContent = "Горизонтально (обратно)";
+        break;
+      case "column":
+        opt.textContent = "Вертикально";
+        break;
+      case "column-reverse":
+        opt.textContent = "Вертикально (обратно)";
+        break;
+    }
     dropdown.appendChild(opt);
   });
+  const textHorizontAlign = document.createElement('p');
+
+  textHorizontAlign.id = 'textOutput';
+ // Добавляем контейнер в левую панель
+  if (leftPane) {
+    leftPane.appendChild(container);
+  }
+  textHorizontAlign.textContent = dropdown.value;
+
 
   // Добавляем обработчик события для изменения выравнивания
   dropdown.addEventListener("change", () => {
     const buttonsContainer = document.getElementById("buttons-container");
     if (buttonsContainer) {
       buttonsContainer.style.flexDirection = dropdown.value;
+      textHorizontAlign.textContent = dropdown.value;
     } else {
       console.error("Buttons container not found");
     }
@@ -223,11 +247,13 @@ function addAlignmentDropdown(leftPaneId: string): void {
 
   // Добавляем выпадающий список в контейнер и контейнер в левую панель
   container.appendChild(dropdown);
+  container.appendChild(textHorizontAlign);
   leftPane.appendChild(container);
 }
-addAlignmentDropdown("left-pane");
+addFlexDirectionDropdown("left-pane");
 
-function addFloatDropdown(leftPaneId: string): void {
+//writingMode ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
+function addWritingModeDropdown(leftPaneId: string): void {
   // Ищем левую панель
   const leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
@@ -284,10 +310,8 @@ function addFloatDropdown(leftPaneId: string): void {
   leftPane.appendChild(container);
 
 }
-addFloatDropdown("left-pane");
-
-
-
+addWritingModeDropdown("left-pane");
+//justifyContent ["flex-start", "center", "flex-end", "space-between"];
 function addJustifyHorizontalDropdown(leftPaneId: string): void {
   // Ищем левую панель
   const leftPane = document.getElementById(leftPaneId);
@@ -423,3 +447,9 @@ function addJustifyVerticalDropdown(leftPaneId: string): void {
   leftPane.appendChild(container);
 }
 addJustifyVerticalDropdown("left-pane");
+addDisplayDropdown("left-pane");
+if (condition) {
+  
+} else {
+  
+}
