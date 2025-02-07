@@ -286,73 +286,7 @@ function addFloatDropdown(leftPaneId: string): void {
 }
 addFloatDropdown("left-pane");
 
-// Функция для создания чекбокса
-function createCheckbox(leftPaneId: string): void {
-  // Ищем левую панель
-  const leftPane = document.getElementById(leftPaneId);
-  if (!leftPane) {
-    console.error(`Element with ID '${leftPaneId}' not found.`);
-    return;
-  }
 
-  // Создаем контейнер для чекбокса
-  const container = document.createElement('div');
-  container.style.display = "flex-inline";
-  container.style.flexDirection = "column";
-  container.style.marginBottom = '20px';
-
-  // Создаем чекбокс
-  const checkbox = document.createElement('input');
-  //const checkbox = document.createElement('select');  
-  checkbox.type = 'checkbox';
-  checkbox.id = 'customCheckbox';
-  checkbox.checked = false; // Начальное состояние
-
-  // Добавляем обработчик события для изменения состояния чекбокса
-  checkbox.addEventListener('change', () => {
-    updateTextField(checkbox.checked);
-  });
-    // Функция для создания текстового поля
-  const textField = document.createElement('p');
-
-  textField.id = 'textOutput';
- // Добавляем контейнер в левую панель
-  if (leftPane) {
-    leftPane.appendChild(container);
-  }
- textField.textContent = 'Grid';
-  // Добавляем чекбокс и текстовое поле в контейнер
-  container.appendChild(checkbox);
-  container.appendChild(textField);
-}
-// Jбновлениt текстового поля в зависимости от состояния чекбокса
-function updateTextField(isChecked: boolean): void {
-  const textField = document.getElementById('textOutput') as HTMLParagraphElement;
-  const buttonContainer = document.getElementById('buttons-container');
-  // Пример логики: изменяем текст в зависимости от состояния чекбокса
-  if (isChecked) {
-    textField.textContent = 'Flexbox';
-
-    if (buttonContainer) {
-        buttonContainer.style.display = 'flex';
-        buttonContainer.style.flexDirection = "direction";
-        buttonContainer.style.justifyContent = "justifyContent";
-        buttonContainer.style.alignItems = "alignItems";
-    } else {
-        console.error('Buttons container not found');
-    }
-  } else {
-      textField.textContent = 'Grid';
-      if (buttonContainer) {
-        buttonContainer.style.display = 'grid';
-        buttonContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(100px, 1fr))';
-
-    } else {
-        console.error('Buttons container not found');
-    }
-  }
-}
-createCheckbox("left-pane");
 
 function addJustifyHorizontalDropdown(leftPaneId: string): void {
   // Ищем левую панель
