@@ -10,6 +10,7 @@ var houtputDiv = document.getElementById('hi-output');
 var wInput = document.getElementById('w-Input');
 var woutputDiv = document.getElementById('w-output');
 var generatedHtmlTextarea = document.getElementById('generated-html');
+var displayDropdown = document.getElementById('display-dropdown');
 var buttonData = ['Connect', 'Disconnect', 'Reset', 'Available', 'Preparing', 'Charging', 'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 'Plug`n`Charge', 'EmergencyButton'];
 var widthInteractiveDiv = interactiveDiv.style.width;
 hiInput.style.width = "100px";
@@ -29,7 +30,9 @@ buttonData.forEach(function (text, index) {
   } else {
     console.error('Buttons container not found');
   }
-
+  // Set button styles
+  button.style.width = '100px';
+  button.style.height = '50px';
   // Add corresponding list item with a checkbox
   var listItem = document.createElement('li');
   listItem.style.display = 'flex';
@@ -66,7 +69,6 @@ generateHtmlButton.addEventListener('click', function () {
     console.error('Interactive div not found');
   }
 });
-
 // Добавляем обработчик события 'input'. 
 hiInput.addEventListener('input', function () {
   // Получаем текущее значение из поля ввода. 
@@ -77,6 +79,7 @@ hiInput.addEventListener('input', function () {
     generatedHtmlTextarea.style.height = 'auto';
     return;
   }
+  numberValue = 100;
   // Преобразуем введенное значение в число с помощью parseInt. 
   // Основание 10 указывает на десятичную систему счисления.
   var numberValue = parseInt(hi_inputValue, 10);
@@ -107,7 +110,6 @@ wInput.addEventListener('input', function () {
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width = wnumberValue + 'px';
 });
-
 //display ["flex","grid", "block", "none", "inline-block"];
 function addDisplayDropdown(leftPaneId) {
   // Ищем левую панель
@@ -116,18 +118,16 @@ function addDisplayDropdown(leftPaneId) {
     console.error("Element with ID '".concat(leftPaneId, "' not found."));
     return;
   }
-
   // Создаём контейнер для выпадающего списка и текстового поля
   var container = document.createElement("div");
   container.style.display = "flex";
   container.style.flexDirection = "column";
   container.style.marginBottom = "20px";
-
   // Создаём выпадающий список
   var dropdown = document.createElement("select");
+  dropdown.id = "display-dropdown";
   dropdown.style.marginBottom = "10px";
   dropdown.style.width = "100px";
-
   // Слова для выпадающего списка
   var options = ["flex", "grid", "block", "none", "inline-block"];
   options.forEach(function (option) {
@@ -153,6 +153,9 @@ function addDisplayDropdown(leftPaneId) {
     if (buttonsContainer) {
       // Устанавливаем стиль display для buttons-container
       buttonsContainer.style.display = dropdown.value;
+      if (dropdown.value === "grid") {
+        addJustifyVerticalDropdown("left-pane");
+      }
     } else {
       console.error('Buttons container not found');
     }
@@ -166,7 +169,6 @@ function addDisplayDropdown(leftPaneId) {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-addDisplayDropdown("left-pane");
 //flex-direction ["row", "row-reverse", "column", "column-reverse"];
 function addFlexDirectionDropdown(leftPaneId) {
   // Находим левую панель
@@ -236,8 +238,6 @@ function addFlexDirectionDropdown(leftPaneId) {
   container.appendChild(textHorizontAlign);
   leftPane.appendChild(container);
 }
-addFlexDirectionDropdown("left-pane");
-
 //writingMode ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
 function addWritingModeDropdown(leftPaneId) {
   // Ищем левую панель
@@ -295,7 +295,6 @@ function addWritingModeDropdown(leftPaneId) {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-addWritingModeDropdown("left-pane");
 //justifyContent ["flex-start", "center", "flex-end", "space-between"];
 function addJustifyHorizontalDropdown(leftPaneId) {
   // Ищем левую панель
@@ -362,7 +361,6 @@ function addJustifyHorizontalDropdown(leftPaneId) {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-addJustifyHorizontalDropdown("left-pane");
 function addJustifyVerticalDropdown(leftPaneId) {
   // Ищем левую панель
   var leftPane = document.getElementById(leftPaneId);
@@ -428,5 +426,8 @@ function addJustifyVerticalDropdown(leftPaneId) {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-addJustifyVerticalDropdown("left-pane");
 addDisplayDropdown("left-pane");
+addFlexDirectionDropdown("left-pane");
+addWritingModeDropdown("left-pane");
+addJustifyHorizontalDropdown("left-pane");
+addJustifyVerticalDropdown("left-pane");

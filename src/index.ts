@@ -8,7 +8,8 @@ const generateHtmlButton = document.getElementById('generate-html-button')!;
   const wInput = document.getElementById('w-Input') as HTMLInputElement;
   const woutputDiv = document.getElementById('w-output') as HTMLElement;
   const generatedHtmlTextarea = document.getElementById('generated-html') as HTMLTextAreaElement;
-var buttonData = [
+  const displayDropdown = document.getElementById('display-dropdown') as HTMLSelectElement;
+  var buttonData = [
   'Connect', 'Disconnect', 'Reset','Available', 'Preparing',  'Charging', 
   'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 
   'Plug`n`Charge', 'EmergencyButton'
@@ -32,7 +33,9 @@ buttonData.forEach((text, index) => {
   } else {
     console.error('Buttons container not found');
   }
-
+  // Set button styles
+  button.style.width='100px';
+  button.style.height='50px';
   // Add corresponding list item with a checkbox
   const listItem = document.createElement('li');
   listItem.style.display = 'flex';
@@ -57,7 +60,6 @@ buttonData.forEach((text, index) => {
   button.style.display = 'none';
 
 });
-
 function getElementHTML(selector: string) {
   var element = document.querySelector(selector);
   if (element) {
@@ -67,7 +69,6 @@ function getElementHTML(selector: string) {
       return null;
   }
 }
-
 generateHtmlButton.addEventListener('click', () => {
     if (interactiveDiv) {
       const htmlContent = interactiveDiv.outerHTML;
@@ -76,7 +77,6 @@ generateHtmlButton.addEventListener('click', () => {
       console.error('Interactive div not found');
     }
   });
-
 // Добавляем обработчик события 'input'. 
 hiInput.addEventListener('input', () => {
     // Получаем текущее значение из поля ввода. 
@@ -87,6 +87,7 @@ hiInput.addEventListener('input', () => {
         generatedHtmlTextarea.style.height = 'auto';
         return;
     }
+    numberValue= 100;
     // Преобразуем введенное значение в число с помощью parseInt. 
     // Основание 10 указывает на десятичную систему счисления.
     var numberValue: number = parseInt(hi_inputValue, 10);
@@ -101,7 +102,6 @@ hiInput.addEventListener('input', () => {
     houtputDiv.textContent = "Высота виджета: " + numberValue;
     interactiveDiv.style.height=numberValue+'px'
 });
-
 wInput.addEventListener('input', () => {
   let winputValue = wInput.value;
   if (winputValue === "") {
@@ -118,7 +118,6 @@ wInput.addEventListener('input', () => {
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width=wnumberValue+'px'
 });
-
 //display ["flex","grid", "block", "none", "inline-block"];
 function addDisplayDropdown(leftPaneId: string): void {
   // Ищем левую панель
@@ -127,18 +126,16 @@ function addDisplayDropdown(leftPaneId: string): void {
       console.error(`Element with ID '${leftPaneId}' not found.`);
       return;
   }
-
   // Создаём контейнер для выпадающего списка и текстового поля
   const container = document.createElement("div");
   container.style.display = "flex";
   container.style.flexDirection = "column";
   container.style.marginBottom = "20px";
-
   // Создаём выпадающий список
   const dropdown = document.createElement("select");
+  dropdown.id = "display-dropdown";
   dropdown.style.marginBottom = "10px";
   dropdown.style.width = "100px";
-
   // Слова для выпадающего списка
   const options = ["flex","grid", "block", "none", "inline-block"];
   options.forEach(option => {
@@ -164,6 +161,8 @@ function addDisplayDropdown(leftPaneId: string): void {
       if (buttonsContainer) {
           // Устанавливаем стиль display для buttons-container
           buttonsContainer.style.display = dropdown.value;
+          if (dropdown.value === "grid") {
+            addJustifyVerticalDropdown("left-pane");}
       } else {
           console.error('Buttons container not found');
       }
@@ -178,7 +177,6 @@ function addDisplayDropdown(leftPaneId: string): void {
   leftPane.appendChild(container);
 
 }
-addDisplayDropdown("left-pane");
 //flex-direction ["row", "row-reverse", "column", "column-reverse"];
 function addFlexDirectionDropdown(leftPaneId: string): void {
   // Находим левую панель
@@ -250,8 +248,6 @@ function addFlexDirectionDropdown(leftPaneId: string): void {
   container.appendChild(textHorizontAlign);
   leftPane.appendChild(container);
 }
-addFlexDirectionDropdown("left-pane");
-
 //writingMode ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
 function addWritingModeDropdown(leftPaneId: string): void {
   // Ищем левую панель
@@ -310,7 +306,6 @@ function addWritingModeDropdown(leftPaneId: string): void {
   leftPane.appendChild(container);
 
 }
-addWritingModeDropdown("left-pane");
 //justifyContent ["flex-start", "center", "flex-end", "space-between"];
 function addJustifyHorizontalDropdown(leftPaneId: string): void {
   // Ищем левую панель
@@ -378,8 +373,6 @@ function addJustifyHorizontalDropdown(leftPaneId: string): void {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-addJustifyHorizontalDropdown("left-pane");
-
 function addJustifyVerticalDropdown(leftPaneId: string): void {
   // Ищем левую панель
   const leftPane = document.getElementById(leftPaneId);
@@ -446,10 +439,8 @@ function addJustifyVerticalDropdown(leftPaneId: string): void {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-addJustifyVerticalDropdown("left-pane");
 addDisplayDropdown("left-pane");
-if (condition) {
-  
-} else {
-  
-}
+addFlexDirectionDropdown("left-pane");
+addWritingModeDropdown("left-pane");
+addJustifyHorizontalDropdown("left-pane");
+addJustifyVerticalDropdown("left-pane");

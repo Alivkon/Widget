@@ -70,3 +70,8 @@ body {
     font-family: monospace;
    /* resize: none;*/
   }
+  #hi-output {
+    border-width: 10px;
+    border-radius: 10px;
+
+  }
