@@ -11,21 +11,32 @@
           <ul id="item-list">
             <!-- Items with checkboxes will be added dynamically -->
           </ul>
-          <input type="input" id="hi-Input" placeholder="Введите высоту виджета">
-          <div id="hi-output"> 
-          Высота виджета:</div>
-          <input type="input" id="w-Input" placeholder="Введите ширину виджета">
+          Установите высоту виджета <br>
+          <input type="input" id="hi-Input" placeholder="100">
+          <div id="hi-output" > 
+          Высота виджета: 100 </div>
+
+          Установите ширину виджета <br>
+          <input type="input" id="w-Input" placeholder="400">
           <div id="w-output"> 
-          Ширина виджета:</div>
-         </div>
+          Ширина виджета: 600</div>
+
+          <input type="input" id="h-butn-Input" placeholder="50">
+          <div id="h-butn-output"> 
+          Высота кнопки: 50</div>
+
+          <input type="input" id="w-butn-Input" placeholder="100">
+          <div id="w-butn-output">
+          Ширина кнопки: 100</div> 
+        </div>
         <div id="right-pane">
           <div id="interactive-div">
             Station name <br>
             Station adress
-           
             <div id="buttons-container">
               <!-- Buttons will be added dynamically -->
             </div>
+            <ul id="itemList"></ul>
           </div>
           <button id="generate-html-button">Generate HTML</button>
           <textarea id="generated-html" readonly></textarea>
