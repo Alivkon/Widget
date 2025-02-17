@@ -3,16 +3,16 @@
 var interactiveDiv = document.getElementById('interactive-div');
 var itemList = document.getElementById('item-list');
 var generateHtmlButton = document.getElementById('generate-html-button');
-//const generatedHtmlTextarea = document.getElementById('generated-html')! as HTMLTextAreaElement;
+var generatedHtmlTextarea = document.getElementById('generated-html');
 // Получаем элементы DOM по их ID. Важно указать тип, чтобы TypeScript знал, что это HTMLInputElement и HTMLElement
 var hiInput = document.getElementById('hi-Input');
 var houtputDiv = document.getElementById('hi-output');
 var wInput = document.getElementById('w-Input');
 var woutputDiv = document.getElementById('w-output');
-var generatedHtmlTextarea = document.getElementById('generated-html');
+//const generatedHtmlTextarea = document.getElementById('generated-html') as HTMLTextAreaElement;
 var displayDropdown = document.getElementById('display-dropdown');
 var flexDirectionDropdown = document.getElementById('flex-direction-dropdown');
-var justifyVerticaldropdown = document.getElementById('justify-vertical-dropdown');
+// const justifyVerticaldropdown= document.getElementById('justify-vertical-dropdown') as HTMLSelectElement;
 var buttonData = ['Connect', 'Disconnect', 'Reset', 'Available', 'Preparing', 'Charging', 'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 'Plug`n`Charge', 'EmergencyButton'];
 var widthInteractiveDiv = interactiveDiv.style.width;
 hiInput.style.width = "100px";
@@ -112,6 +112,27 @@ wInput.addEventListener('input', function () {
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width = wnumberValue + 'px';
 });
+function chooseDisplayDropdown() {
+  var displayDropdown1 = document.getElementById("display-dropdown");
+  var flexDirectionDropdown = document.getElementById("flex-direction-dropdown");
+  if (displayDropdown1.value === "flex") {
+    if (flexDirectionDropdown) {
+      showFlexDirectionDropdown();
+      hideJustifyVerticalDropdown();
+    } else {
+      console.error("hideJustifyVerticalDropdown not found");
+    }
+  }
+  if (displayDropdown1.value === "grid") {
+    showJustifyVerticalDropdown();
+    hideFlexDirectionDropdown();
+  } else {
+    showFlexDirectionDropdown();
+    showJustifyVerticalDropdown();
+    console.log("showFlexDirectionDropdown and showJustifyVerticalDropdown");
+  }
+}
+//display ["flex","grid", "block", "none", "inline-block"]
 function addDisplayDropdown(leftPaneId) {
   var leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
@@ -142,40 +163,22 @@ function addDisplayDropdown(leftPaneId) {
   textField.style.padding = "10px";
   textField.value = options[0]; // Инициализируем первым значением
 
-  //   displayDropdown.addEventListener("change", () => {
-  //     textField.value = displayDropdown.value;
-  //     const flexDirectionDropdown = document.getElementById("flex-direction-dropdown");
-
-  //     if (displayDropdown.value === "flex") {
-  //         if (flexDirectionDropdown) {
-  //             flexDirectionDropdown.style.display = "inline-block";
-  //            justifyVerticaldropdown.style.display = "none"; 
-  //         } else {
-  //             console.error("Flex direction dropdown not found");
-  //         }
-  //     }
-  //     if (displayDropdown.value === "grid") {
-  //       justifyVerticaldropdown.style.display = "inline-block";
-  //       if (flexDirectionDropdown) {
-  //         flexDirectionDropdown.style.display = "none";
-  //       } else {
-  //         console.error("Flex direction dropdown not found");
-  //       }
-  //     }
-  //     const buttonsContainer = document.getElementById("buttons-container");
-  //     if (buttonsContainer) {
-  //         buttonsContainer.style.display = displayDropdown.value;
-  //     } else {
-  //         console.error("Buttons container not found");
-  //     }
-  // });
-
+  displayDropdown.addEventListener("change", function () {
+    textField.value = displayDropdown.value;
+    //const flexDirectionDropdown = document.getElementById("flex-direction-dropdown");
+    chooseDisplayDropdown();
+    var buttonsContainer = document.getElementById("buttons-container");
+    if (buttonsContainer) {
+      buttonsContainer.style.display = displayDropdown.value;
+    } else {
+      console.error("Buttons container not found");
+    }
+  });
   container.appendChild(displayDropdown);
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
 
-//display ["flex","grid", "block", "none", "inline-block"]
 //flex-direction ["row", "row-reverse", "column", "column-reverse"];
 function addFlexDirectionDropdown(leftPaneId) {
   var leftPane = document.getElementById(leftPaneId);
@@ -183,53 +186,51 @@ function addFlexDirectionDropdown(leftPaneId) {
     console.error("Element with ID '".concat(leftPaneId, "' not found."));
     return;
   }
-  var existingDropdown = document.querySelector("#left-pane select");
-  if (existingDropdown) {
-    existingDropdown.remove();
-  }
-  var container = document.createElement("div");
-  container.style.marginBottom = "20px";
-  container.style.display = "flex";
+  var containerFlexDirection = document.createElement("div");
+  containerFlexDirection.style.marginBottom = "20px";
+  containerFlexDirection.style.display = "flex";
+  containerFlexDirection.id = "container-flex-direction";
   var flexDirectionDropdown = document.createElement("select");
   flexDirectionDropdown.id = "flex-direction-dropdown";
   flexDirectionDropdown.style.width = "200px";
   flexDirectionDropdown.style.padding = "5px";
   flexDirectionDropdown.style.marginBottom = "10px";
-  var options = ["row", "row-reverse", "column", "column-reverse"];
-  options.forEach(function (option) {
-    var opt = document.createElement("option");
-    opt.value = option;
+  flexDirectionDropdown.style.display = "flex";
+  var optionsRowColAlign = ["row", "row-reverse", "column", "column-reverse"];
+  optionsRowColAlign.forEach(function (option) {
+    var optRowColAlign = document.createElement("option");
+    optRowColAlign.value = option;
     switch (option) {
       case "row":
-        opt.textContent = "Горизонтально";
+        optRowColAlign.textContent = "Горизонтально";
         break;
       case "row-reverse":
-        opt.textContent = "Горизонтально (обратно)";
+        optRowColAlign.textContent = "Горизонтально (обратно)";
         break;
       case "column":
-        opt.textContent = "Вертикально";
+        optRowColAlign.textContent = "Вертикально";
         break;
       case "column-reverse":
-        opt.textContent = "Вертикально (обратно)";
+        optRowColAlign.textContent = "Вертикально (обратно)";
         break;
     }
-    flexDirectionDropdown.appendChild(opt);
+    flexDirectionDropdown.appendChild(optRowColAlign);
   });
-  var textHorizontAlign = document.createElement("p");
-  textHorizontAlign.id = "textOutput";
-  textHorizontAlign.textContent = options[0];
+  var textFlexDirection = document.createElement("p");
+  textFlexDirection.id = "text-horizontal-align-output";
+  textFlexDirection.textContent = optionsRowColAlign[0];
   flexDirectionDropdown.addEventListener("change", function () {
     var buttonsContainer = document.getElementById("buttons-container");
     if (buttonsContainer) {
       buttonsContainer.style.flexDirection = flexDirectionDropdown.value;
-      textHorizontAlign.textContent = flexDirectionDropdown.value;
+      textFlexDirection.textContent = flexDirectionDropdown.value;
     } else {
       console.error("Buttons container not found");
     }
   });
-  container.appendChild(flexDirectionDropdown);
-  container.appendChild(textHorizontAlign);
-  leftPane.appendChild(container);
+  containerFlexDirection.appendChild(flexDirectionDropdown);
+  containerFlexDirection.appendChild(textFlexDirection);
+  leftPane.appendChild(containerFlexDirection);
 }
 //writingMode ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
 function addWritingModeDropdown(leftPaneId) {
@@ -303,6 +304,7 @@ function addJustifyHorizontalDropdown(leftPaneId) {
   container.style.justifyContent = "flex";
   container.style.flexDirection = "column";
   container.style.marginBottom = "20px";
+  container.id = "container-justify-horizontal";
 
   // Создаём выпадающий список
   var dropdown = document.createElement("select");
@@ -365,10 +367,12 @@ function addJustifyVerticalDropdown(leftPaneId) {
   }
 
   // Создаём контейнер для выпадающего списка и текстового поля
-  var container = document.createElement("div");
-  container.style.alignItems = "flex";
-  container.style.flexDirection = "column";
-  container.style.marginBottom = "20px";
+  var containerVerticalAlign = document.createElement("div");
+  containerVerticalAlign.style.alignItems = "flex";
+  containerVerticalAlign.style.flexDirection = "column";
+  containerVerticalAlign.style.marginBottom = "20px";
+  containerVerticalAlign.id = "container-justify-vertical";
+  containerVerticalAlign.style.display = "flex";
 
   // Создаём выпадающий список
   var justifyVerticaldropdown = document.createElement("select");
@@ -412,26 +416,65 @@ function addJustifyVerticalDropdown(leftPaneId) {
   textFieldHorizontAlign.id = 'textOutput';
   // Добавляем контейнер в левую панель
   if (leftPane) {
-    leftPane.appendChild(container);
+    leftPane.appendChild(containerVerticalAlign);
   }
   textFieldHorizontAlign.textContent = 'Выравнивание по вертикали:';
   // Добавляем чекбокс и текстовое поле в контейнер
-  container.appendChild(textFieldHorizontAlign);
+  containerVerticalAlign.appendChild(textFieldHorizontAlign);
   // Добавляем элементы в контейнер, а затем в левую панель
-  container.appendChild(justifyVerticaldropdown);
-  container.appendChild(textField);
-  leftPane.appendChild(container);
+  containerVerticalAlign.appendChild(justifyVerticaldropdown);
+  containerVerticalAlign.appendChild(textField);
+  leftPane.appendChild(containerVerticalAlign);
 }
-addDisplayDropdown("left-pane");
-addDisplayDropdown("left-pane");
-//addDisplayDropdown("left-pane");
+function hideJustifyVerticalDropdown() {
+  var justifyVerticalDropdown2 = document.getElementById("container-justify-vertical");
+  if (justifyVerticalDropdown2) {
+    console.info("container-justify-vertical нашёлся");
+    justifyVerticalDropdown2.style.display = "none";
+  } else {
+    console.info("container-justify-vertical not found");
+  }
+}
+function hideFlexDirectionDropdown() {
+  var flexDirectionDropdown2 = document.getElementById("container-flex-direction");
+  if (flexDirectionDropdown2) {
+    flexDirectionDropdown2.style.display = "none";
+    console.info("container-flex-direction нашёлся");
+  } else {
+    console.info("container-flex-direction not found");
+  }
+}
+function showFlexDirectionDropdown() {
+  var flexDirectionDropdown3 = document.getElementById("container-flex-direction");
+  if (flexDirectionDropdown3) {
+    flexDirectionDropdown3.style.display = "flex";
+    console.info("container-flex-direction нашёлся");
+  } else {
+    console.info("container-flex-direction not found");
+  }
+}
 
+//hideJustifyVerticalDropdown();
+function showJustifyVerticalDropdown() {
+  var justifyVerticalDropdown2 = document.getElementById("container-justify-vertical");
+  if (justifyVerticalDropdown2) {
+    console.info("container-justify-vertical нашёлся");
+    justifyVerticalDropdown2.style.display = "flex";
+  } else {
+    console.info("container-justify-vertical not found");
+  }
+}
+
+//showJustifyVerticalDropdown();
+//add elements to site
+addDisplayDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
-flexDirectionDropdown.style.display = "none";
+addJustifyVerticalDropdown("left-pane");
+
+//hideflexDirectionDropdown();
+//hideJustifyVerticalDropdown();
 //addWritingModeDropdown("left-pane");
 //addJustifyHorizontalDropdown("left-pane");
-addJustifyVerticalDropdown("left-pane");
-justifyVerticaldropdown.style.display = "none";
 
 //  function addAfterDisplay(displayDropdown: string): void {
 // //   const dispDrop = displayDropdown;
