@@ -24,7 +24,6 @@ wInput.style.width = "100px";
 wInput.value = "600";
 interactiveDiv.style.width = "600px";
 
-
 buttonData.forEach((text, index) => {
   // Add button elements to the interactive div
   const button = document.createElement('button');
@@ -237,52 +236,52 @@ function addFlexWrapDropdown(leftPaneId: string): void {
       console.error(`Element with ID '${leftPaneId}' not found.`);
       return;
   }
-
+ // Создаём контейнер для выпадающего списка и текстового поля
   const containerFlexWrap = document.createElement("div");
   containerFlexWrap.style.marginBottom = "20px";
   containerFlexWrap.style.display = "flex";
   containerFlexWrap.id = "container-flex-wrap";
-
+   // Создаём выпадающий список
   const flexWrapDropdown = document.createElement("select");
-  flexWrapDropdown.id = "flex-wrap-dropdown";
   flexWrapDropdown.style.width = "200px";
   flexWrapDropdown.style.padding = "5px";
   flexWrapDropdown.style.marginBottom = "10px";
   flexWrapDropdown.style.display = "flex";
-
-  const optionsRowColAlign = ["wrap", "nowrap", "wrap-reverse"];
-  optionsRowColAlign.forEach(option => {
-      const optRowColAlign = document.createElement("option");
-      optRowColAlign.value = option;
+  flexWrapDropdown.id = "flex-wrap-dropdown";
+  // Слова для выпадающего списка
+  const optionsRowWrap = ["wrap", "nowrap", "wrap-reverse"];
+  optionsRowWrap.forEach(option => {
+      const optionsRowWrap = document.createElement("option");
+      optionsRowWrap.value = option;
       switch (option) {
-          case "row":
-              optRowColAlign.textContent = "Обёрнуто";
+          case "wrap":
+            optionsRowWrap.textContent = "Вписано";
               break;
-          case "row-reverse":
-              optRowColAlign.textContent = "Не бёрнуто";
+          case "nowrap":
+            optionsRowWrap.textContent = "Не вписано";
               break;
-          case "column-reverse":
-              optRowColAlign.textContent = "Обёрнуто (обратно)";
+          case "wrap-reverse":
+            optionsRowWrap.textContent = "Вписано (обратно)";
               break;
       }
-      flexDirectionDropdown.appendChild(optRowColAlign);
+      flexWrapDropdown.appendChild(optionsRowWrap);
   });
 
   const textFlexWrapDirection = document.createElement("p");
   textFlexWrapDirection.id = "text-wrap-output";
-  textFlexWrapDirection.textContent = optionsRowColAlign[0];
+  textFlexWrapDirection.textContent = optionsRowWrap[0];
 
-  flexDirectionDropdown.addEventListener("change", () => {
+  flexWrapDropdown.addEventListener("change", () => {
       const buttonsContainer = document.getElementById("buttons-container");
       if (buttonsContainer) {
-          buttonsContainer.style.flexDirection = flexDirectionDropdown.value+" "+flexWrapDropdown.value;
-          textFlexWrapDirection.textContent = flexDirectionDropdown.value;
+        buttonsContainer.style.flexWrap = flexWrapDropdown.value; // Исправлено
+        textFlexWrapDirection.textContent = flexWrapDropdown.value;
       } else {
           console.error("Buttons container not found");
       }
   });
 
-  containerFlexWrap.appendChild(flexDirectionDropdown);
+  containerFlexWrap.appendChild(flexWrapDropdown);
   containerFlexWrap.appendChild(textFlexWrapDirection);
   leftPane.appendChild(containerFlexWrap);
 }
@@ -294,7 +293,7 @@ function showFlexWrapDropdown(): void {
   else {console.info("container-flex-wrap для show not found");}
 }
 function hideFlexWrapDropdown(): void {
-  const flexWrapDropdown = document.getElementById("container-wrap-wrap");
+  const flexWrapDropdown = document.getElementById("container-flex-wrap");
   if (flexWrapDropdown) {
     flexWrapDropdown.style.display = "none";
     console.info("container-flex-wrap для hide нашёлся") ;}
@@ -439,7 +438,7 @@ function addJustifyVerticalDropdown(leftPaneId: string): void {
   // Создаём контейнер для выпадающего списка и текстового поля
   const containerVerticalAlign = document.createElement("div");
   containerVerticalAlign.style.alignItems = "flex";
-  containerVerticalAlign.style.flexDirection = "column";
+  //containerVerticalAlign.style.flexDirection = "column";
   containerVerticalAlign.style.marginBottom = "20px";
   containerVerticalAlign.id = "container-justify-vertical";
   containerVerticalAlign.style.display = "flex";
@@ -458,7 +457,6 @@ function addJustifyVerticalDropdown(leftPaneId: string): void {
       opt.textContent = option;
       justifyVerticaldropdown.appendChild(opt);
   });
-
   // Создаём текстовое поле
   const textField = document.createElement("input");
   textField.type = "text";
@@ -467,7 +465,6 @@ function addJustifyVerticalDropdown(leftPaneId: string): void {
   textField.style.border = "1px solid #ccc";
   textField.style.borderRadius = "5px";
   textField.style.width = "100px";
-
   // Обработчик изменений для выпадающего списка
   justifyVerticaldropdown.addEventListener("change", () => {
       textField.value = justifyVerticaldropdown.value; // Обновляем текстовое поле при выборе
@@ -479,7 +476,6 @@ function addJustifyVerticalDropdown(leftPaneId: string): void {
           console.error('Buttons container not found');
       }
   });
-
   // Инициализируем текстовое поле первым значением
   textField.value = justifyVerticaldropdown.value;
   const textFieldHorizontAlign = document.createElement('p');
@@ -489,10 +485,8 @@ function addJustifyVerticalDropdown(leftPaneId: string): void {
   if (leftPane) {
     leftPane.appendChild(containerVerticalAlign);
   }
-  textFieldHorizontAlign.textContent = 'Выравнивание по вертикали:';
-  // Добавляем чекбокс и текстовое поле в контейнер
-  containerVerticalAlign.appendChild(textFieldHorizontAlign);
   // Добавляем элементы в контейнер, а затем в левую панель
+  containerVerticalAlign.appendChild(textFieldHorizontAlign);
   containerVerticalAlign.appendChild(justifyVerticaldropdown);
   containerVerticalAlign.appendChild(textField);
   leftPane.appendChild(containerVerticalAlign);
@@ -505,7 +499,6 @@ function hideJustifyVerticalDropdown(): void {
     }
     else {console.info("container-justify-vertical not found");}
 }
-
 function hideFlexDirectionDropdown(): void {
   const flexDirectionDropdown2 = document.getElementById("container-flex-direction");
   if (flexDirectionDropdown2) {
@@ -513,7 +506,6 @@ function hideFlexDirectionDropdown(): void {
     console.info("container-flex-direction нашёлся") ;}
     else {console.info("container-flex-direction not found");}
 }
-
 function showFlexDirectionDropdown(): void {
   const flexDirectionDropdown3 = document.getElementById("container-flex-direction");
   if (flexDirectionDropdown3) {
@@ -521,7 +513,6 @@ function showFlexDirectionDropdown(): void {
     console.info("container-flex-direction нашёлся") ;}
   else {console.info("container-flex-direction not found");}
 }
-
 function showJustifyVerticalDropdown(): void {
   const justifyVerticalDropdown2 = document.getElementById("container-justify-vertical");
   if (justifyVerticalDropdown2) {
