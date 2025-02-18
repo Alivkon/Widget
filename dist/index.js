@@ -158,7 +158,6 @@ function addDisplayDropdown(leftPaneId) {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-
 //flex-direction ["row", "row-reverse", "column", "column-reverse"];
 function addFlexDirectionDropdown(leftPaneId) {
   var leftPane = document.getElementById(leftPaneId);
@@ -211,6 +210,73 @@ function addFlexDirectionDropdown(leftPaneId) {
   containerFlexDirection.appendChild(flexDirectionDropdown);
   containerFlexDirection.appendChild(textFlexDirection);
   leftPane.appendChild(containerFlexDirection);
+}
+function addFlexWrapDropdown(leftPaneId) {
+  var leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+    console.error("Element with ID '".concat(leftPaneId, "' not found."));
+    return;
+  }
+  var containerFlexWrap = document.createElement("div");
+  containerFlexWrap.style.marginBottom = "20px";
+  containerFlexWrap.style.display = "flex";
+  containerFlexWrap.id = "container-flex-wrap";
+  var flexWrapDropdown = document.createElement("select");
+  flexWrapDropdown.id = "flex-wrap-dropdown";
+  flexWrapDropdown.style.width = "200px";
+  flexWrapDropdown.style.padding = "5px";
+  flexWrapDropdown.style.marginBottom = "10px";
+  flexWrapDropdown.style.display = "flex";
+  var optionsRowColAlign = ["wrap", "nowrap", "wrap-reverse"];
+  optionsRowColAlign.forEach(function (option) {
+    var optRowColAlign = document.createElement("option");
+    optRowColAlign.value = option;
+    switch (option) {
+      case "row":
+        optRowColAlign.textContent = "Обёрнуто";
+        break;
+      case "row-reverse":
+        optRowColAlign.textContent = "Не бёрнуто";
+        break;
+      case "column-reverse":
+        optRowColAlign.textContent = "Обёрнуто (обратно)";
+        break;
+    }
+    flexDirectionDropdown.appendChild(optRowColAlign);
+  });
+  var textFlexWrapDirection = document.createElement("p");
+  textFlexWrapDirection.id = "text-wrap-output";
+  textFlexWrapDirection.textContent = optionsRowColAlign[0];
+  flexDirectionDropdown.addEventListener("change", function () {
+    var buttonsContainer = document.getElementById("buttons-container");
+    if (buttonsContainer) {
+      buttonsContainer.style.flexDirection = flexDirectionDropdown.value + " " + flexWrapDropdown.value;
+      textFlexWrapDirection.textContent = flexDirectionDropdown.value;
+    } else {
+      console.error("Buttons container not found");
+    }
+  });
+  containerFlexWrap.appendChild(flexDirectionDropdown);
+  containerFlexWrap.appendChild(textFlexWrapDirection);
+  leftPane.appendChild(containerFlexWrap);
+}
+function showFlexWrapDropdown() {
+  var flexWrapDropdown = document.getElementById("container-flex-wrap");
+  if (flexWrapDropdown) {
+    flexWrapDropdown.style.display = "flex";
+    console.info("container-flex-wrap для show нашёлся");
+  } else {
+    console.info("container-flex-wrap для show not found");
+  }
+}
+function hideFlexWrapDropdown() {
+  var flexWrapDropdown = document.getElementById("container-wrap-wrap");
+  if (flexWrapDropdown) {
+    flexWrapDropdown.style.display = "none";
+    console.info("container-flex-wrap для hide нашёлся");
+  } else {
+    console.info("container-flex-wrap для hide not found");
+  }
 }
 //writingMode ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
 function addWritingModeDropdown(leftPaneId) {
@@ -433,8 +499,6 @@ function showFlexDirectionDropdown() {
     console.info("container-flex-direction not found");
   }
 }
-
-//hideJustifyVerticalDropdown();
 function showJustifyVerticalDropdown() {
   var justifyVerticalDropdown2 = document.getElementById("container-justify-vertical");
   if (justifyVerticalDropdown2) {
@@ -448,9 +512,11 @@ function chooseDisplayDropdown() {
   var displayDropdown1 = document.getElementById("display-dropdown");
   if (displayDropdown1.value === "flex") {
     showFlexDirectionDropdown();
+    showFlexWrapDropdown();
     hideJustifyVerticalDropdown();
   } else if (displayDropdown1.value === "grid") {
     showJustifyVerticalDropdown();
+    hideFlexWrapDropdown();
     hideFlexDirectionDropdown();
   } else {
     hideFlexDirectionDropdown();
@@ -463,6 +529,7 @@ addDisplayDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
 chooseDisplayDropdown();
+addFlexWrapDropdown("left-pane");
 //hideflexDirectionDropdown();
 //hideJustifyVerticalDropdown();
 //addWritingModeDropdown("left-pane");

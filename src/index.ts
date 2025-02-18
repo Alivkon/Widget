@@ -231,6 +231,75 @@ function addFlexDirectionDropdown(leftPaneId: string): void {
   containerFlexDirection.appendChild(textFlexDirection);
   leftPane.appendChild(containerFlexDirection);
 }
+function addFlexWrapDropdown(leftPaneId: string): void {
+  const leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+      console.error(`Element with ID '${leftPaneId}' not found.`);
+      return;
+  }
+
+  const containerFlexWrap = document.createElement("div");
+  containerFlexWrap.style.marginBottom = "20px";
+  containerFlexWrap.style.display = "flex";
+  containerFlexWrap.id = "container-flex-wrap";
+
+  const flexWrapDropdown = document.createElement("select");
+  flexWrapDropdown.id = "flex-wrap-dropdown";
+  flexWrapDropdown.style.width = "200px";
+  flexWrapDropdown.style.padding = "5px";
+  flexWrapDropdown.style.marginBottom = "10px";
+  flexWrapDropdown.style.display = "flex";
+
+  const optionsRowColAlign = ["wrap", "nowrap", "wrap-reverse"];
+  optionsRowColAlign.forEach(option => {
+      const optRowColAlign = document.createElement("option");
+      optRowColAlign.value = option;
+      switch (option) {
+          case "row":
+              optRowColAlign.textContent = "Обёрнуто";
+              break;
+          case "row-reverse":
+              optRowColAlign.textContent = "Не бёрнуто";
+              break;
+          case "column-reverse":
+              optRowColAlign.textContent = "Обёрнуто (обратно)";
+              break;
+      }
+      flexDirectionDropdown.appendChild(optRowColAlign);
+  });
+
+  const textFlexWrapDirection = document.createElement("p");
+  textFlexWrapDirection.id = "text-wrap-output";
+  textFlexWrapDirection.textContent = optionsRowColAlign[0];
+
+  flexDirectionDropdown.addEventListener("change", () => {
+      const buttonsContainer = document.getElementById("buttons-container");
+      if (buttonsContainer) {
+          buttonsContainer.style.flexDirection = flexDirectionDropdown.value+" "+flexWrapDropdown.value;
+          textFlexWrapDirection.textContent = flexDirectionDropdown.value;
+      } else {
+          console.error("Buttons container not found");
+      }
+  });
+
+  containerFlexWrap.appendChild(flexDirectionDropdown);
+  containerFlexWrap.appendChild(textFlexWrapDirection);
+  leftPane.appendChild(containerFlexWrap);
+}
+function showFlexWrapDropdown(): void {
+  const flexWrapDropdown = document.getElementById("container-flex-wrap");
+  if (flexWrapDropdown) {
+    flexWrapDropdown.style.display = "flex";
+    console.info("container-flex-wrap для show нашёлся") ;}
+  else {console.info("container-flex-wrap для show not found");}
+}
+function hideFlexWrapDropdown(): void {
+  const flexWrapDropdown = document.getElementById("container-wrap-wrap");
+  if (flexWrapDropdown) {
+    flexWrapDropdown.style.display = "none";
+    console.info("container-flex-wrap для hide нашёлся") ;}
+  else {console.info("container-flex-wrap для hide not found");}
+}
 //writingMode ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
 function addWritingModeDropdown(leftPaneId: string): void {
   // Ищем левую панель
@@ -465,9 +534,11 @@ function chooseDisplayDropdown(): void {
   const displayDropdown1 = document.getElementById("display-dropdown") as HTMLSelectElement;
   if (displayDropdown1.value === "flex") {
     showFlexDirectionDropdown();
+    showFlexWrapDropdown();
     hideJustifyVerticalDropdown();
   } else if (displayDropdown1.value === "grid") {
     showJustifyVerticalDropdown();
+    hideFlexWrapDropdown();
     hideFlexDirectionDropdown();
   } else {
     hideFlexDirectionDropdown();
@@ -479,7 +550,9 @@ function chooseDisplayDropdown(): void {
 addDisplayDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
-chooseDisplayDropdown()
+addFlexWrapDropdown("left-pane");
+chooseDisplayDropdown();
+
 //hideflexDirectionDropdown();
 //hideJustifyVerticalDropdown();
 //addWritingModeDropdown("left-pane");
