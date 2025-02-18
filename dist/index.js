@@ -112,26 +112,6 @@ wInput.addEventListener('input', function () {
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width = wnumberValue + 'px';
 });
-function chooseDisplayDropdown() {
-  var displayDropdown1 = document.getElementById("display-dropdown");
-  var flexDirectionDropdown = document.getElementById("flex-direction-dropdown");
-  if (displayDropdown1.value === "flex") {
-    if (flexDirectionDropdown) {
-      showFlexDirectionDropdown();
-      hideJustifyVerticalDropdown();
-    } else {
-      console.error("hideJustifyVerticalDropdown not found");
-    }
-  }
-  if (displayDropdown1.value === "grid") {
-    showJustifyVerticalDropdown();
-    hideFlexDirectionDropdown();
-  } else {
-    showFlexDirectionDropdown();
-    showJustifyVerticalDropdown();
-    console.log("showFlexDirectionDropdown and showJustifyVerticalDropdown");
-  }
-}
 //display ["flex","grid", "block", "none", "inline-block"]
 function addDisplayDropdown(leftPaneId) {
   var leftPane = document.getElementById(leftPaneId);
@@ -146,6 +126,7 @@ function addDisplayDropdown(leftPaneId) {
   container.style.border = "2px solid #ccc";
   container.style.borderRadius = "5px";
   var displayDropdown = document.createElement("select");
+  displayDropdown.id = "display-dropdown"; // Ensure the ID is set
   displayDropdown.style.marginBottom = "10px";
   displayDropdown.style.width = "75px";
   displayDropdown.style.height = "30px";
@@ -165,8 +146,7 @@ function addDisplayDropdown(leftPaneId) {
 
   displayDropdown.addEventListener("change", function () {
     textField.value = displayDropdown.value;
-    //const flexDirectionDropdown = document.getElementById("flex-direction-dropdown");
-    chooseDisplayDropdown();
+    chooseDisplayDropdown(); // Call the function here
     var buttonsContainer = document.getElementById("buttons-container");
     if (buttonsContainer) {
       buttonsContainer.style.display = displayDropdown.value;
@@ -464,13 +444,25 @@ function showJustifyVerticalDropdown() {
     console.info("container-justify-vertical not found");
   }
 }
-
+function chooseDisplayDropdown() {
+  var displayDropdown1 = document.getElementById("display-dropdown");
+  if (displayDropdown1.value === "flex") {
+    showFlexDirectionDropdown();
+    hideJustifyVerticalDropdown();
+  } else if (displayDropdown1.value === "grid") {
+    showJustifyVerticalDropdown();
+    hideFlexDirectionDropdown();
+  } else {
+    hideFlexDirectionDropdown();
+    hideJustifyVerticalDropdown();
+  }
+}
 //showJustifyVerticalDropdown();
 //add elements to site
 addDisplayDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
-
+chooseDisplayDropdown();
 //hideflexDirectionDropdown();
 //hideJustifyVerticalDropdown();
 //addWritingModeDropdown("left-pane");

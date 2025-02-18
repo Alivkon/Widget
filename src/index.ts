@@ -136,6 +136,7 @@ function addDisplayDropdown(leftPaneId: string): void {
   container.style.borderRadius = "5px";
 
   const displayDropdown = document.createElement("select");
+  displayDropdown.id = "display-dropdown"; // Ensure the ID is set
   displayDropdown.style.marginBottom = "10px";
   displayDropdown.style.width = "75px";
   displayDropdown.style.height = "30px";
@@ -157,10 +158,8 @@ function addDisplayDropdown(leftPaneId: string): void {
 
   displayDropdown.addEventListener("change", () => {
   textField.value = displayDropdown.value;
-  //const flexDirectionDropdown = document.getElementById("flex-direction-dropdown");
-    chooseDisplayDropdown()
-     
-   const buttonsContainer = document.getElementById("buttons-container");
+  chooseDisplayDropdown(); // Call the function here
+  const buttonsContainer = document.getElementById("buttons-container");
       if (buttonsContainer) {
           buttonsContainer.style.display = displayDropdown.value;
       } else {
@@ -173,7 +172,6 @@ function addDisplayDropdown(leftPaneId: string): void {
   container.appendChild(textField);
   leftPane.appendChild(container);
 }
-
 //flex-direction ["row", "row-reverse", "column", "column-reverse"];
 function addFlexDirectionDropdown(leftPaneId: string): void {
   const leftPane = document.getElementById(leftPaneId);
@@ -455,8 +453,6 @@ function showFlexDirectionDropdown(): void {
   else {console.info("container-flex-direction not found");}
 }
 
-
-//hideJustifyVerticalDropdown();
 function showJustifyVerticalDropdown(): void {
   const justifyVerticalDropdown2 = document.getElementById("container-justify-vertical");
   if (justifyVerticalDropdown2) {
@@ -467,30 +463,23 @@ function showJustifyVerticalDropdown(): void {
 }
 function chooseDisplayDropdown(): void {
   const displayDropdown1 = document.getElementById("display-dropdown") as HTMLSelectElement;
-  const flexDirectionDropdown = document.getElementById("flex-direction-dropdown") as HTMLSelectElement;
   if (displayDropdown1.value === "flex") {
-    if (flexDirectionDropdown) {
-       showFlexDirectionDropdown();
-       hideJustifyVerticalDropdown(); 
-    } else {
-       console.error("hideJustifyVerticalDropdown not found");
-     }
+    showFlexDirectionDropdown();
+    hideJustifyVerticalDropdown();
+  } else if (displayDropdown1.value === "grid") {
+    showJustifyVerticalDropdown();
+    hideFlexDirectionDropdown();
+  } else {
+    hideFlexDirectionDropdown();
+    hideJustifyVerticalDropdown();
   }
-  if (displayDropdown1.value === "grid") {
-       showJustifyVerticalDropdown();
-       hideFlexDirectionDropdown();
-       }
- else { showFlexDirectionDropdown();
-        showJustifyVerticalDropdown();
-        console.log("showFlexDirectionDropdown and showJustifyVerticalDropdown");
-       }
 }
 //showJustifyVerticalDropdown();
 //add elements to site
 addDisplayDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
-
+chooseDisplayDropdown()
 //hideflexDirectionDropdown();
 //hideJustifyVerticalDropdown();
 //addWritingModeDropdown("left-pane");
