@@ -1,4 +1,4 @@
-const interactiveDiv = document.getElementById('interactive-div')!;
+const interactiveDiv = document.getElementById('buttons-container')!;
 const itemList = document.getElementById('item-list')!;
 const generateHtmlButton = document.getElementById('generate-html-button')!;
 const generatedHtmlTextarea = document.getElementById('generated-html')! as HTMLTextAreaElement;
