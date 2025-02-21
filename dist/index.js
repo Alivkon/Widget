@@ -1,6 +1,6 @@
 "use strict";
 
-var interactiveDiv = document.getElementById('interactive-div');
+var interactiveDiv = document.getElementById('buttons-container');
 var itemList = document.getElementById('item-list');
 var generateHtmlButton = document.getElementById('generate-html-button');
 var generatedHtmlTextarea = document.getElementById('generated-html');
@@ -12,7 +12,7 @@ var woutputDiv = document.getElementById('w-output');
 //const generatedHtmlTextarea = document.getElementById('generated-html') as HTMLTextAreaElement;
 var displayDropdown = document.getElementById('display-dropdown');
 var flexDirectionDropdown = document.getElementById('flex-direction-dropdown');
-// const justifyVerticaldropdown= document.getElementById('justify-vertical-dropdown') as HTMLSelectElement;
+var justifyVerticaldropdown = document.getElementById('justify-vertical-dropdown');
 var buttonData = ['Connect', 'Disconnect', 'Reset', 'Available', 'Preparing', 'Charging', 'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 'Plug`n`Charge', 'EmergencyButton'];
 var widthInteractiveDiv = interactiveDiv.style.width;
 hiInput.style.width = "100px";
@@ -21,6 +21,9 @@ interactiveDiv.style.height = hiInput.value + 'px';
 wInput.style.width = "100px";
 wInput.value = "600";
 interactiveDiv.style.width = wInput.value + 'px';
+//interactiveDiv.style.alignItems = "center";
+//interactiveDiv.style.justifyContent = "center";
+
 buttonData.forEach(function (text, index) {
   // Add button elements to the interactive div
   var button = document.createElement('button');
@@ -124,17 +127,19 @@ function addDisplayDropdown(leftPaneId) {
     console.error("Element with ID '".concat(leftPaneId, "' not found."));
     return;
   }
-  var container = document.createElement("div");
-  container.style.display = "flex";
-  container.style.flexDirection = "row";
-  container.style.marginBottom = "15px";
-  container.style.border = "2px solid #ccc";
-  container.style.borderRadius = "5px";
+  // Создаём контейнер для выпадающего списка и текстового поля
+  var containerDisplay = document.createElement("div");
+  containerDisplay.style.marginBottom = "20px";
+  containerDisplay.style.display = "flex";
+  containerDisplay.style.flexDirection = "row";
+  containerDisplay.id = "container-display";
+  // Создаём выпадающий список
+
   var displayDropdown = document.createElement("select");
   displayDropdown.id = "display-dropdown"; // Ensure the ID is set
+  displayDropdown.style.width = "200px";
+  displayDropdown.style.padding = "5px";
   displayDropdown.style.marginBottom = "10px";
-  displayDropdown.style.width = "75px";
-  displayDropdown.style.height = "30px";
   displayDropdown.value = "flex";
   var options = ["flex", "grid", "block", "none", "inline-block"];
   options.forEach(function (option) {
@@ -143,14 +148,12 @@ function addDisplayDropdown(leftPaneId) {
     opt.textContent = option;
     displayDropdown.appendChild(opt);
   });
-  var textField = document.createElement("input");
-  textField.type = "text";
-  textField.readOnly = true;
-  textField.style.padding = "10px";
-  textField.value = options[0]; // Инициализируем первым значением
+  var textField = document.createElement("p");
+  textField.id = "text-display-output";
+  textField.textContent = options[0]; // Инициализируем первым значением
 
   displayDropdown.addEventListener("change", function () {
-    textField.value = displayDropdown.value;
+    textField.textContent = displayDropdown.value;
     chooseDisplayDropdown(); // Call the function here
     var buttonsContainer = document.getElementById("buttons-container");
     if (buttonsContainer) {
@@ -159,27 +162,31 @@ function addDisplayDropdown(leftPaneId) {
       console.error("Buttons container not found");
     }
   });
-  container.appendChild(displayDropdown);
-  container.appendChild(textField);
-  leftPane.appendChild(container);
+  containerDisplay.appendChild(displayDropdown);
+  containerDisplay.appendChild(textField);
+  leftPane.appendChild(containerDisplay);
 }
 //flex-direction ["row", "row-reverse", "column", "column-reverse"];
 function addFlexDirectionDropdown(leftPaneId) {
+  // Ищем левую панель
   var leftPane = document.getElementById(leftPaneId);
   if (!leftPane) {
     console.error("Element with ID '".concat(leftPaneId, "' not found."));
     return;
   }
+  // Создаём контейнер для выпадающего списка и текстового поля
   var containerFlexDirection = document.createElement("div");
   containerFlexDirection.style.marginBottom = "20px";
   containerFlexDirection.style.display = "flex";
   containerFlexDirection.id = "container-flex-direction";
+  // Создаём выпадающий список
   var flexDirectionDropdown = document.createElement("select");
   flexDirectionDropdown.id = "flex-direction-dropdown";
   flexDirectionDropdown.style.width = "200px";
   flexDirectionDropdown.style.padding = "5px";
   flexDirectionDropdown.style.marginBottom = "10px";
   flexDirectionDropdown.style.display = "flex";
+  // Слова для выпадающего списка
   var optionsRowColAlign = ["row", "row-reverse", "column", "column-reverse"];
   optionsRowColAlign.forEach(function (option) {
     var optRowColAlign = document.createElement("option");
@@ -200,9 +207,11 @@ function addFlexDirectionDropdown(leftPaneId) {
     }
     flexDirectionDropdown.appendChild(optRowColAlign);
   });
+  // Создаём текстовое поле
   var textFlexDirection = document.createElement("p");
   textFlexDirection.id = "text-horizontal-align-output";
   textFlexDirection.textContent = optionsRowColAlign[0];
+  // Обработчик изменений для выпадающего списка
   flexDirectionDropdown.addEventListener("change", function () {
     var buttonsContainer = document.getElementById("buttons-container");
     if (buttonsContainer) {
@@ -212,9 +221,113 @@ function addFlexDirectionDropdown(leftPaneId) {
       console.error("Buttons container not found");
     }
   });
+  // Добавляем элементы в контейнер, а затем в левую панель
   containerFlexDirection.appendChild(flexDirectionDropdown);
   containerFlexDirection.appendChild(textFlexDirection);
   leftPane.appendChild(containerFlexDirection);
+}
+//justify-content ["center", "start", "end", "left","right","flex-start", "flex-end", "space-between", "space-around", "space-evenly"];
+function addJustifyContentDropdown(leftPaneId) {
+  var leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+    console.error("Element with ID '".concat(leftPaneId, "' not found."));
+    return;
+  }
+  // Создаём контейнер для выпадающего списка и текстового поля
+  var containerJustifyContent = document.createElement("div");
+  containerJustifyContent.style.marginBottom = "20px";
+  containerJustifyContent.style.display = "flex";
+  containerJustifyContent.id = "container-justify-content";
+
+  // Создаём выпадающий список
+  var justifyContentDropdown = document.createElement("select");
+  justifyContentDropdown.id = "justify-content-dropdown";
+  justifyContentDropdown.style.width = "200px";
+  justifyContentDropdown.style.padding = "5px";
+  justifyContentDropdown.style.marginBottom = "10px";
+  justifyContentDropdown.style.display = "flex";
+  // Слова для выпадающего списка
+  var optionsJustifyContent = ["center", "start", "end", "left", "right", "flex-start", "flex-end", "space-between", "space-around", "space-evenly"];
+  optionsJustifyContent.forEach(function (option) {
+    var optJustifyContent = document.createElement("option");
+    optJustifyContent.value = option;
+    switch (option) {
+      case "center":
+        optJustifyContent.textContent = "По центру";
+        break;
+      case "start":
+        optJustifyContent.textContent = "start";
+        break;
+      case "end":
+        optJustifyContent.textContent = "end";
+        break;
+      case "left":
+        optJustifyContent.textContent = "left";
+        break;
+      case "right":
+        optJustifyContent.textContent = "right";
+        break;
+      case "flex-start":
+        optJustifyContent.textContent = "flex-start";
+        break;
+      case "flex-end":
+        optJustifyContent.textContent = "flex-end";
+        break;
+      case "space-between":
+        optJustifyContent.textContent = "space-between";
+        break;
+      case "space-around":
+        optJustifyContent.textContent = "space-around";
+        break;
+      case "space-evenly":
+        optJustifyContent.textContent = "space-evenly";
+        break;
+    }
+    justifyContentDropdown.appendChild(optJustifyContent);
+  });
+  // Создаём текстовое поле
+  var textJustifyContent = document.createElement("p");
+  textJustifyContent.id = "text-justify-content-output";
+  textJustifyContent.textContent = optionsJustifyContent[0];
+  // Обработчик изменений для выпадающего списка
+  flexDirectionDropdown.addEventListener("change", function () {
+    var buttonsContainer = document.getElementById("buttons-container");
+    if (buttonsContainer) {
+      buttonsContainer.style.justifyContent = justifyContentDropdown.value;
+      textJustifyContent.textContent = justifyContentDropdown.value;
+    } else {
+      console.error("Buttons container not found");
+    }
+  });
+  // Создаём заголовок
+  var textHeadJustifyContent = document.createTextNode("JustifyContent");
+  // Создаём элемент <br> для перевода строки
+  var lineBreak = document.createElement("br");
+
+  // Добавляем элементы в контейнер, а затем в левую панель
+  containerJustifyContent.appendChild(textHeadJustifyContent);
+  containerJustifyContent.appendChild(lineBreak); // Добавляем перевод строки
+  containerJustifyContent.appendChild(justifyContentDropdown);
+  containerJustifyContent.appendChild(textJustifyContent);
+  leftPane.appendChild(containerJustifyContent);
+}
+function showJustifyContentDropdown() {
+  var JustifyContentDropdown = document.getElementById("container-justify-content");
+  if (JustifyContentDropdown) {
+    JustifyContentDropdown.style.display = "flex";
+    console.info("container-justify-content для show нашёлся");
+  } else {
+    console.info("container-justify-content для show not found");
+  }
+}
+function hideJustifyContentDropdown() {
+  var JustifyContentDropdown = document.getElementById("container-justify-content");
+  if (JustifyContentDropdown) {
+    JustifyContentDropdown.style.display = "none";
+    console.info("container-justify-content для hide нашёлся");
+  } else {
+    console.info("container-justify-content для hide not found");
+  }
 }
 function addFlexWrapDropdown(leftPaneId) {
   var leftPane = document.getElementById(leftPaneId);
@@ -264,6 +377,18 @@ function addFlexWrapDropdown(leftPaneId) {
       console.error("Buttons container not found");
     }
   });
+  // Создаём заголовок
+  var textHeadFlexWrap = document.createTextNode("flexWrap");
+  // Создаём элемент <br> для перевода строки
+  var lineBreak = document.createElement("br");
+  // Добавляем контейнер в левую панель
+  if (leftPane) {
+    leftPane.appendChild(containerFlexWrap);
+  }
+  // Добавляем элементы в контейнер, а затем в левую панель
+  containerFlexWrap.appendChild(textHeadFlexWrap);
+  containerFlexWrap.appendChild(lineBreak); // Добавляем перевод строки
+
   containerFlexWrap.appendChild(flexWrapDropdown);
   containerFlexWrap.appendChild(textFlexWrapDirection);
   leftPane.appendChild(containerFlexWrap);
@@ -296,18 +421,17 @@ function addWritingModeDropdown(leftPaneId) {
   }
 
   // Создаём контейнер для выпадающего списка и текстового поля
-  var container = document.createElement("div");
-  container.style.display = "flex";
-  //container.style.flexDirection = "column";
-  container.style.marginBottom = "20px";
-
+  var containerWritingMode = document.createElement("div");
+  containerWritingMode.style.marginBottom = "20px";
+  containerWritingMode.style.display = "flex";
+  containerWritingMode.id = "container-writing-mode";
   // Создаём выпадающий список
-  var dropdown = document.createElement("select");
-  dropdown.style.marginBottom = "10px";
-  dropdown.style.width = "200px";
-  dropdown.style.padding = "5px";
-  dropdown.style.display = "flex";
-  dropdown.id = "writing-mode-dropdown";
+  var dropdownWritingMode = document.createElement("select");
+  dropdownWritingMode.id = "writing-mode-dropdown";
+  dropdownWritingMode.style.width = "200px";
+  dropdownWritingMode.style.marginBottom = "10px";
+  dropdownWritingMode.style.padding = "10px";
+  dropdownWritingMode.style.display = "flex";
 
   // Слова для выпадающего списка
   var options = ["horizontal-tb", "vertical-rl", "vertical-lr", "sideways-rl", "sideways-lr"];
@@ -315,36 +439,29 @@ function addWritingModeDropdown(leftPaneId) {
     var opt = document.createElement("option");
     opt.value = option;
     opt.textContent = option;
-    dropdown.appendChild(opt);
+    dropdownWritingMode.appendChild(opt);
   });
 
   // Создаём текстовое поле
-  var textField = document.createElement("input");
-  textField.type = "text";
-  textField.readOnly = true;
-  textField.style.padding = "5px";
-  textField.style.border = "1px solid #ccc";
-  textField.style.borderRadius = "5px";
-  textField.style.width = "100px";
+  var textWritingMode = document.createElement("p");
+  textWritingMode.id = "text-writing-mode-output";
+  textWritingMode.textContent = options[0];
 
   // Обработчик изменений для выпадающего списка
-  dropdown.addEventListener("change", function () {
-    textField.value = dropdown.value; // Обновляем текстовое поле при выборе
+  dropdownWritingMode.addEventListener("change", function () {
     var buttonsContainer = document.getElementById('buttons-container');
     if (buttonsContainer) {
-      buttonsContainer.style.writingMode = dropdown.value;
+      buttonsContainer.style.writingMode = dropdownWritingMode.value;
+      textWritingMode.textContent = dropdownWritingMode.value;
     } else {
       console.error('Buttons container not found');
     }
   });
 
-  // Инициализируем текстовое поле первым значением
-  textField.value = dropdown.value;
-
   // Добавляем элементы в контейнер, а затем в левую панель
-  container.appendChild(dropdown);
-  container.appendChild(textField);
-  leftPane.appendChild(container);
+  containerWritingMode.appendChild(dropdownWritingMode);
+  containerWritingMode.appendChild(textWritingMode);
+  leftPane.appendChild(containerWritingMode);
 }
 //justifyContent ["flex-start", "center", "flex-end", "space-between"];
 function addJustifyVerticalDropdown(leftPaneId) {
@@ -357,20 +474,18 @@ function addJustifyVerticalDropdown(leftPaneId) {
 
   // Создаём контейнер для выпадающего списка и текстового поля
   var containerVerticalAlign = document.createElement("div");
-  containerVerticalAlign.style.alignItems = "flex";
-  //containerVerticalAlign.style.flexDirection = "column";
   containerVerticalAlign.style.marginBottom = "20px";
-  containerVerticalAlign.id = "container-justify-vertical";
   containerVerticalAlign.style.display = "flex";
-
+  containerVerticalAlign.id = "container-justify-vertical";
   // Создаём выпадающий список
   var justifyVerticaldropdown = document.createElement("select");
-  justifyVerticaldropdown.style.marginBottom = "10px";
-  justifyVerticaldropdown.style.width = "100px";
   justifyVerticaldropdown.id = "justify-vertical-dropdown";
-
+  justifyVerticaldropdown.style.width = "200px";
+  justifyVerticaldropdown.style.padding = "5px";
+  justifyVerticaldropdown.style.marginBottom = "10px";
+  justifyVerticaldropdown.style.display = "flex";
   // Слова для выпадающего списка
-  var options = ["flex-start", "center", "flex-end", "space-between"];
+  var options = ["normal", "stretch", "center", "start", "end", "flex-start", "flex-end", "self-start", "self-end", "anchor-center", "baseline", "firstbaseline", "lastbaseline", "safecenter", "unsafecenter"];
   options.forEach(function (option) {
     var opt = document.createElement("option");
     opt.value = option;
@@ -378,26 +493,29 @@ function addJustifyVerticalDropdown(leftPaneId) {
     justifyVerticaldropdown.appendChild(opt);
   });
   // Создаём текстовое поле
-  var textField = document.createElement("input");
-  textField.type = "text";
-  textField.readOnly = true;
-  textField.style.padding = "5px";
-  textField.style.border = "1px solid #ccc";
-  textField.style.borderRadius = "5px";
-  textField.style.width = "100px";
+  var textVerticalAlign = document.createElement("p");
+  textVerticalAlign.id = "text-justify-vertical-output";
+  textVerticalAlign.textContent = options[0];
   // Обработчик изменений для выпадающего списка
   justifyVerticaldropdown.addEventListener("change", function () {
-    textField.value = justifyVerticaldropdown.value; // Обновляем текстовое поле при выборе
+    textVerticalAlign.textContent = justifyVerticaldropdown.value; // Обновляем текстовое поле при выборе
     var buttonsContainer = document.getElementById('buttons-container');
     if (buttonsContainer) {
-      // Устанавливаем стиль display для buttons-container
+      // Устанавливаем стиль align-items для buttons-container
       buttonsContainer.style.alignItems = justifyVerticaldropdown.value;
+      console.info('buttonsContainer.style.alignItems = ' + justifyVerticaldropdown.value);
     } else {
       console.error('Buttons container not found');
     }
   });
-  // Инициализируем текстовое поле первым значением
-  textField.value = justifyVerticaldropdown.value;
+  // Создаём заголовок
+  var textHeadVerticalAlign = document.createTextNode("alignItems");
+
+  // Создаём элемент <br> для перевода строки
+  var lineBreak = document.createElement("br");
+
+  // Инициализируем текстовое поле 
+  textVerticalAlign.textContent = justifyVerticaldropdown.value;
   var textFieldHorizontAlign = document.createElement('p');
   textFieldHorizontAlign.id = 'textOutput';
   // Добавляем контейнер в левую панель
@@ -405,9 +523,10 @@ function addJustifyVerticalDropdown(leftPaneId) {
     leftPane.appendChild(containerVerticalAlign);
   }
   // Добавляем элементы в контейнер, а затем в левую панель
-  containerVerticalAlign.appendChild(textFieldHorizontAlign);
+  containerVerticalAlign.appendChild(textHeadVerticalAlign);
+  containerVerticalAlign.appendChild(lineBreak); // Добавляем перевод строки
   containerVerticalAlign.appendChild(justifyVerticaldropdown);
-  containerVerticalAlign.appendChild(textField);
+  containerVerticalAlign.appendChild(textVerticalAlign);
   leftPane.appendChild(containerVerticalAlign);
 }
 function hideJustifyVerticalDropdown() {
@@ -447,18 +566,25 @@ function showJustifyVerticalDropdown() {
   }
 }
 function chooseDisplayDropdown() {
-  var displayDropdown1 = document.getElementById("display-dropdown");
-  if (displayDropdown1.value === "flex") {
+  var displayDropdown = document.getElementById("display-dropdown");
+  if (displayDropdown.value === "flex") {
+    // Показываем настройки для Flexbox
     showFlexDirectionDropdown();
     showFlexWrapDropdown();
-    hideJustifyVerticalDropdown();
-  } else if (displayDropdown1.value === "grid") {
     showJustifyVerticalDropdown();
-    hideFlexWrapDropdown();
+    showJustifyContentDropdown();
+  } else if (displayDropdown.value === "grid") {
+    // Показываем настройки для Grid
+    hideJustifyVerticalDropdown();
     hideFlexDirectionDropdown();
-  } else {
+    hideFlexWrapDropdown();
+    showJustifyContentDropdown();
+  } else if (displayDropdown.value === "block" || displayDropdown.value === "none" || displayDropdown.value === "inline-block") {
+    // Скрываем все специфические настройки
     hideFlexDirectionDropdown();
     hideJustifyVerticalDropdown();
+    hideFlexWrapDropdown();
+    showJustifyContentDropdown();
   }
 }
 //showJustifyVerticalDropdown();
@@ -468,18 +594,6 @@ addDisplayDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
 addFlexWrapDropdown("left-pane");
+addJustifyContentDropdown("left-pane");
+showJustifyContentDropdown();
 chooseDisplayDropdown();
-
-//hideflexDirectionDropdown();
-//hideJustifyVerticalDropdown();
-//addWritingModeDropdown("left-pane");
-//addJustifyHorizontalDropdown("left-pane");
-
-//  function addAfterDisplay(displayDropdown: string): void {
-// //   const dispDrop = displayDropdown;
-//    if (displayDropdown === "flex") {
-//     flexDirectionDropdown.style.display = "flex";
-//   }
-//   else {
-//     flexDirectionDropdown.style.display = "none";
-//   }}
