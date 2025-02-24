@@ -13,6 +13,8 @@ var woutputDiv = document.getElementById('w-output');
 var displayDropdown = document.getElementById('display-dropdown');
 var flexDirectionDropdown = document.getElementById('flex-direction-dropdown');
 var justifyVerticaldropdown = document.getElementById('justify-vertical-dropdown');
+var flexWrapDropdown = document.getElementById('flex-wrap-dropdown');
+var dropdownWritingMode = document.getElementById('writing-mode-dropdown');
 var buttonData = ['Connect', 'Disconnect', 'Reset', 'Available', 'Preparing', 'Charging', 'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 'Plug`n`Charge', 'EmergencyButton'];
 var widthInteractiveDiv = interactiveDiv.style.width;
 hiInput.style.width = "100px";
@@ -21,9 +23,6 @@ interactiveDiv.style.height = hiInput.value + 'px';
 wInput.style.width = "100px";
 wInput.value = "600";
 interactiveDiv.style.width = wInput.value + 'px';
-//interactiveDiv.style.alignItems = "center";
-//interactiveDiv.style.justifyContent = "center";
-
 buttonData.forEach(function (text, index) {
   // Add button elements to the interactive div
   var button = document.createElement('button');
@@ -162,6 +161,15 @@ function addDisplayDropdown(leftPaneId) {
       console.error("Buttons container not found");
     }
   });
+  // Создаём заголовок
+  var textHeadDisplay = document.createTextNode("alignItems");
+
+  // Создаём элемент <br> для перевода строки
+  var lineBreak = document.createElement("br");
+
+  // Добавляем элементы в контейнер, а затем в левую панель
+  containerDisplay.appendChild(textHeadDisplay);
+  containerDisplay.appendChild(lineBreak); // Добавляем перевод строки
   containerDisplay.appendChild(displayDropdown);
   containerDisplay.appendChild(textField);
   leftPane.appendChild(containerDisplay);
@@ -221,7 +229,16 @@ function addFlexDirectionDropdown(leftPaneId) {
       console.error("Buttons container not found");
     }
   });
+
+  // Создаём заголовок
+  var textHeadFlexDirection = document.createTextNode("flexDirection");
+
+  // Создаём элемент <br> для перевода строки
+  var lineBreak = document.createElement("br");
+
   // Добавляем элементы в контейнер, а затем в левую панель
+  containerFlexDirection.appendChild(textHeadFlexDirection);
+  containerFlexDirection.appendChild(lineBreak); // Добавляем перевод строки
   containerFlexDirection.appendChild(flexDirectionDropdown);
   containerFlexDirection.appendChild(textFlexDirection);
   leftPane.appendChild(containerFlexDirection);
@@ -290,7 +307,7 @@ function addJustifyContentDropdown(leftPaneId) {
   textJustifyContent.id = "text-justify-content-output";
   textJustifyContent.textContent = optionsJustifyContent[0];
   // Обработчик изменений для выпадающего списка
-  flexDirectionDropdown.addEventListener("change", function () {
+  justifyContentDropdown.addEventListener("change", function () {
     var buttonsContainer = document.getElementById("buttons-container");
     if (buttonsContainer) {
       buttonsContainer.style.justifyContent = justifyContentDropdown.value;
@@ -381,14 +398,10 @@ function addFlexWrapDropdown(leftPaneId) {
   var textHeadFlexWrap = document.createTextNode("flexWrap");
   // Создаём элемент <br> для перевода строки
   var lineBreak = document.createElement("br");
-  // Добавляем контейнер в левую панель
-  if (leftPane) {
-    leftPane.appendChild(containerFlexWrap);
-  }
+
   // Добавляем элементы в контейнер, а затем в левую панель
   containerFlexWrap.appendChild(textHeadFlexWrap);
   containerFlexWrap.appendChild(lineBreak); // Добавляем перевод строки
-
   containerFlexWrap.appendChild(flexWrapDropdown);
   containerFlexWrap.appendChild(textFlexWrapDirection);
   leftPane.appendChild(containerFlexWrap);
@@ -457,8 +470,15 @@ function addWritingModeDropdown(leftPaneId) {
       console.error('Buttons container not found');
     }
   });
+  // Создаём заголовок
+  var textHeadwritingMode = document.createTextNode("writingMode");
+
+  // Создаём элемент <br> для перевода строки
+  var lineBreak = document.createElement("br");
 
   // Добавляем элементы в контейнер, а затем в левую панель
+  containerWritingMode.appendChild(textHeadwritingMode);
+  containerWritingMode.appendChild(lineBreak); // Добавляем перевод строки
   containerWritingMode.appendChild(dropdownWritingMode);
   containerWritingMode.appendChild(textWritingMode);
   leftPane.appendChild(containerWritingMode);
@@ -508,20 +528,18 @@ function addJustifyVerticalDropdown(leftPaneId) {
       console.error('Buttons container not found');
     }
   });
+
+  // Инициализируем текстовое поле 
+  textVerticalAlign.textContent = justifyVerticaldropdown.value;
+  var textFieldHorizontAlign = document.createElement('p');
+  textFieldHorizontAlign.id = 'textOutput';
+
   // Создаём заголовок
   var textHeadVerticalAlign = document.createTextNode("alignItems");
 
   // Создаём элемент <br> для перевода строки
   var lineBreak = document.createElement("br");
 
-  // Инициализируем текстовое поле 
-  textVerticalAlign.textContent = justifyVerticaldropdown.value;
-  var textFieldHorizontAlign = document.createElement('p');
-  textFieldHorizontAlign.id = 'textOutput';
-  // Добавляем контейнер в левую панель
-  if (leftPane) {
-    leftPane.appendChild(containerVerticalAlign);
-  }
   // Добавляем элементы в контейнер, а затем в левую панель
   containerVerticalAlign.appendChild(textHeadVerticalAlign);
   containerVerticalAlign.appendChild(lineBreak); // Добавляем перевод строки
@@ -597,3 +615,8 @@ addFlexWrapDropdown("left-pane");
 addJustifyContentDropdown("left-pane");
 showJustifyContentDropdown();
 chooseDisplayDropdown();
+interactiveDiv.style.alignItems = displayDropdown.value;
+interactiveDiv.style.flexDirection = flexDirectionDropdown.value;
+interactiveDiv.style.flexWrap = flexWrapDropdown.value;
+interactiveDiv.style.justifyContent = justifyVerticaldropdown.value;
+interactiveDiv.style.writingMode = dropdownWritingMode.value;
