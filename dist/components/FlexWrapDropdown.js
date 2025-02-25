@@ -1,0 +1,66 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addFlexWrapDropdown = addFlexWrapDropdown;
+function addFlexWrapDropdown(leftPaneId) {
+  var leftPane = document.getElementById(leftPaneId);
+  if (!leftPane) {
+    console.error("Element with ID '".concat(leftPaneId, "' not found."));
+    return;
+  }
+  // Создаём контейнер для выпадающего списка и текстового поля
+  var containerFlexWrap = document.createElement("div");
+  containerFlexWrap.style.marginBottom = "20px";
+  containerFlexWrap.style.display = "flex";
+  containerFlexWrap.id = "container-flex-wrap";
+  // Создаём выпадающий список
+  var flexWrapDropdown = document.createElement("select");
+  flexWrapDropdown.style.width = "200px";
+  flexWrapDropdown.style.padding = "5px";
+  flexWrapDropdown.style.marginBottom = "10px";
+  flexWrapDropdown.style.display = "flex";
+  flexWrapDropdown.id = "flex-wrap-dropdown";
+  // Слова для выпадающего списка
+  var optionsRowWrap = ["wrap", "nowrap", "wrap-reverse"];
+  optionsRowWrap.forEach(function (option) {
+    var optionsRowWrap = document.createElement("option");
+    optionsRowWrap.value = option;
+    switch (option) {
+      case "wrap":
+        optionsRowWrap.textContent = "Вписано";
+        break;
+      case "nowrap":
+        optionsRowWrap.textContent = "Не вписано";
+        break;
+      case "wrap-reverse":
+        optionsRowWrap.textContent = "Вписано (обратно)";
+        break;
+    }
+    flexWrapDropdown.appendChild(optionsRowWrap);
+  });
+  var textFlexWrapDirection = document.createElement("p");
+  textFlexWrapDirection.id = "text-wrap-output";
+  textFlexWrapDirection.textContent = optionsRowWrap[0];
+  flexWrapDropdown.addEventListener("change", function () {
+    var buttonsContainer = document.getElementById("buttons-container");
+    if (buttonsContainer) {
+      buttonsContainer.style.flexWrap = flexWrapDropdown.value; // Исправлено
+      textFlexWrapDirection.textContent = flexWrapDropdown.value;
+    } else {
+      console.error("Buttons container not found");
+    }
+  });
+  // Создаём заголовок
+  var textHeadFlexWrap = document.createTextNode("flexWrap");
+  // Создаём элемент <br> для перевода строки
+  var lineBreak = document.createElement("br");
+
+  // Добавляем элементы в контейнер, а затем в левую панель
+  containerFlexWrap.appendChild(textHeadFlexWrap);
+  containerFlexWrap.appendChild(lineBreak); // Добавляем перевод строки
+  containerFlexWrap.appendChild(flexWrapDropdown);
+  containerFlexWrap.appendChild(textFlexWrapDirection);
+  leftPane.appendChild(containerFlexWrap);
+}
