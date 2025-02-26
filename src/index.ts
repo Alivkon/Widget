@@ -1,6 +1,6 @@
-import { generateButtons } from "./components/ButtonGenerator";
-import { addDisplayDropdown } from "./components/DisplayDropdown";
-import { addFlexDirectionDropdown } from "./components/FlexDirectionDropdown";
+//import { generateButtons } from "./components/ButtonGenerator";
+//import { addDisplayDropdown } from "./components/DisplayDropdown";
+//import { addFlexDirectionDropdown } from "./components/FlexDirectionDropdown";
 import { addWritingModeDropdown } from "./components/WritingModeDropdown";
 
 
@@ -33,11 +33,54 @@ wInput.value = "600";
 interactiveDiv.style.width = wInput.value+'px';
 
 // Генерация кнопок
-generateButtons(buttonData, 'buttons-container', 'item-list');
+
+//function generateButtons(buttonData: string[], buttonsContainerId: string, itemListId: string): void {
+
+ buttonData.forEach((text, index) => {
+    // Add button elements to the interactive div
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.className = 'interactive-button';
+    const buttonsContainer = document.getElementById('buttons-container');
+    if (buttonsContainer) {
+      buttonsContainer.appendChild(button);
+    } else {
+      console.error('Buttons container not found');
+    }
+    // Set button styles
+    button.style.width='100px';
+    button.style.height='50px';
+    // Add corresponding list item with a checkbox
+    const listItem = document.createElement('li');
+    listItem.style.display = 'flex';
+    listItem.style.alignItems = 'center';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = `item-checkbox-${index}`;
+    checkbox.addEventListener('change', (event) => {
+      button.style.display = (event.target as HTMLInputElement).checked ? 'inline-block' : 'none';
+    });
+  
+    const label = document.createElement('label');
+    label.htmlFor = `item-checkbox-${index}`;
+    label.textContent = text;
+  
+    listItem.appendChild(checkbox);
+    listItem.appendChild(label);
+    itemList.appendChild(listItem);
+  
+    // Hide button initially
+    button.style.display = 'none';
+  
+  });
+  
+//}
+//generateButtons(buttonData, 'buttons-container', 'item-list');
 // Инициализация выпадающих списков
-addDisplayDropdown("left-pane");
-addFlexDirectionDropdown("left-pane");
-addWritingModeDropdown("left-pane");
+//addDisplayDropdown("left-pane");
+//addFlexDirectionDropdown("left-pane");
+//addWritingModeDropdown("left-pane");
 
 function getElementHTML(selector: string) {
   var element = document.querySelector(selector);
@@ -398,11 +441,11 @@ function chooseDisplayDropdown(): void {
 }
 //showJustifyVerticalDropdown();
 //add elements to site
-addWritingModeDropdown("left-pane");
+//addWritingModeDropdown("left-pane");
 
-addDisplayDropdown("left-pane");
+//addDisplayDropdown("left-pane");
 
-addFlexDirectionDropdown("left-pane");
+//addFlexDirectionDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
 addFlexWrapDropdown("left-pane");
 

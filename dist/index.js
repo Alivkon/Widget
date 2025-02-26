@@ -1,9 +1,12 @@
 "use strict";
 
-var _ButtonGenerator = require("./components/ButtonGenerator");
-var _DisplayDropdown = require("./components/DisplayDropdown");
-var _FlexDirectionDropdown = require("./components/FlexDirectionDropdown");
-var _WritingModeDropdown = require("./components/WritingModeDropdown");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//import { generateButtons } from "./components/ButtonGenerator";
+//import { addDisplayDropdown } from "./components/DisplayDropdown";
+//import { addFlexDirectionDropdown } from "./components/FlexDirectionDropdown";
+
 var interactiveDiv = document.getElementById('buttons-container');
 var itemList = document.getElementById('item-list');
 var generateHtmlButton = document.getElementById('generate-html-button');
@@ -29,11 +32,51 @@ wInput.value = "600";
 interactiveDiv.style.width = wInput.value + 'px';
 
 // Генерация кнопок
-(0, _ButtonGenerator.generateButtons)(buttonData, 'buttons-container', 'item-list');
+
+//function generateButtons(buttonData: string[], buttonsContainerId: string, itemListId: string): void {
+
+buttonData.forEach(function (text, index) {
+  // Add button elements to the interactive div
+  var button = document.createElement('button');
+  button.textContent = text;
+  button.className = 'interactive-button';
+  var buttonsContainer = document.getElementById('buttons-container');
+  if (buttonsContainer) {
+    buttonsContainer.appendChild(button);
+  } else {
+    console.error('Buttons container not found');
+  }
+  // Set button styles
+  button.style.width = '100px';
+  button.style.height = '50px';
+  // Add corresponding list item with a checkbox
+  var listItem = document.createElement('li');
+  listItem.style.display = 'flex';
+  listItem.style.alignItems = 'center';
+  var checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.id = "item-checkbox-".concat(index);
+  checkbox.addEventListener('change', function (event) {
+    button.style.display = event.target.checked ? 'inline-block' : 'none';
+  });
+  var label = document.createElement('label');
+  label.htmlFor = "item-checkbox-".concat(index);
+  label.textContent = text;
+  listItem.appendChild(checkbox);
+  listItem.appendChild(label);
+  itemList.appendChild(listItem);
+
+  // Hide button initially
+  button.style.display = 'none';
+});
+
+//}
+//generateButtons(buttonData, 'buttons-container', 'item-list');
 // Инициализация выпадающих списков
-(0, _DisplayDropdown.addDisplayDropdown)("left-pane");
-(0, _FlexDirectionDropdown.addFlexDirectionDropdown)("left-pane");
-(0, _WritingModeDropdown.addWritingModeDropdown)("left-pane");
+//addDisplayDropdown("left-pane");
+//addFlexDirectionDropdown("left-pane");
+//addWritingModeDropdown("left-pane");
+
 function getElementHTML(selector) {
   var element = document.querySelector(selector);
   if (element) {
@@ -399,9 +442,11 @@ function chooseDisplayDropdown() {
 }
 //showJustifyVerticalDropdown();
 //add elements to site
-(0, _WritingModeDropdown.addWritingModeDropdown)("left-pane");
-(0, _DisplayDropdown.addDisplayDropdown)("left-pane");
-(0, _FlexDirectionDropdown.addFlexDirectionDropdown)("left-pane");
+//addWritingModeDropdown("left-pane");
+
+//addDisplayDropdown("left-pane");
+
+//addFlexDirectionDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
 addFlexWrapDropdown("left-pane");
 addJustifyContentDropdown("left-pane");
