@@ -1,6 +1,6 @@
-//import { generateButtons } from "./components/ButtonGenerator";
-//import { addDisplayDropdown } from "./components/DisplayDropdown";
-//import { addFlexDirectionDropdown } from "./components/FlexDirectionDropdown";
+import { generateButtons } from "./components/ButtonGenerator";
+import { addDisplayDropdown } from "./components/DisplayDropdown";
+import { addFlexDirectionDropdown } from "./components/FlexDirectionDropdown";
 import { addWritingModeDropdown } from "./components/WritingModeDropdown";
 
 
@@ -76,11 +76,11 @@ interactiveDiv.style.width = wInput.value+'px';
   });
   
 //}
-//generateButtons(buttonData, 'buttons-container', 'item-list');
+generateButtons(buttonData, 'buttons-container', 'item-list');
 // Инициализация выпадающих списков
-//addDisplayDropdown("left-pane");
-//addFlexDirectionDropdown("left-pane");
-//addWritingModeDropdown("left-pane");
+addDisplayDropdown("left-pane");
+addFlexDirectionDropdown("left-pane");
+addWritingModeDropdown("left-pane");
 
 function getElementHTML(selector: string) {
   var element = document.querySelector(selector);
