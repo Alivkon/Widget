@@ -20,7 +20,7 @@ export function addDisplayDropdown(leftPaneId: string): void {
     displayDropdown.style.marginBottom = "10px";
     displayDropdown.value = "flex";
   
-    const options = ["flex", "grid", "block", "none", "inline-block"];
+    const options = ["flex", "block", "none", "inline-block"];
     options.forEach(option => {
         const opt = document.createElement("option");
         opt.value = option;
