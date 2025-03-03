@@ -35,6 +35,7 @@ export function addJustifyVerticalDropdown(leftPaneId: string): void {
     justifyVerticaldropdown.addEventListener("change", () => {
       textVerticalAlign.textContent = justifyVerticaldropdown.value; // Обновляем текстовое поле при выборе
         const buttonsContainer = document.getElementById('buttons-container');
+        console.log('Change justifyVerticaldropdown');
         if (buttonsContainer) {
             // Устанавливаем стиль align-items для buttons-container
             buttonsContainer.style.alignItems = justifyVerticaldropdown.value;

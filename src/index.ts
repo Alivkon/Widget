@@ -18,7 +18,6 @@ import {addJustifyVerticalDropdown} from "./components/JustifyVerticalDropdown";
 import { hideJustifyVerticalDropdown } from "./components/hideJustifyVerticalDropdown";
 import { showJustifyVerticalDropdown } from "./components/showJustifyVerticalDropdown";
 
-
 const interactiveDiv = document.getElementById('buttons-container')!;
 const generateHtmlButton = document.getElementById('generate-html-button')!;
 const generatedHtmlTextarea = document.getElementById('generated-html')! as HTMLTextAreaElement;
@@ -29,6 +28,7 @@ const wInput = document.getElementById('w-Input') as HTMLInputElement;
 const woutputDiv = document.getElementById('w-output') as HTMLElement;
   //const generatedHtmlTextarea = document.getElementById('generated-html') as HTMLTextAreaElement;
 //const displayDropdown = document.getElementById('display-dropdown') as HTMLSelectElement;
+const colorPickerBody = document.getElementById('color-picker-body') as HTMLInputElement;
 
 var buttonData = [
   'Connect', 'Disconnect', 'Reset','Available', 'Preparing',  'Charging', 
@@ -105,6 +105,17 @@ wInput.addEventListener('input', () => {
   interactiveDiv.style.width=wnumberValue+'px'
 });
 
+
+if (colorPickerBody) {
+  colorPickerBody.addEventListener('input', () => {
+    interactiveDiv.style.backgroundColor = colorPickerBody.value;
+    console.log("colorPickerBody.value = %s", colorPickerBody.value);
+  });
+} else {
+  console.error('Element with ID "color-picker-body" not found.');
+}
+
+
 // function chooseDisplayDropdown(): void {
 //   const displayDropdown = document.getElementById("display-dropdown") as HTMLSelectElement;
 //   if (displayDropdown.value === "flex") {
@@ -141,6 +152,7 @@ interactiveDiv.style.writingMode = WritingModedropdown.value;
 //hideFlexDirectionDropdown();
 //hideFlexWrapDropdown();
 //hideJustifyVerticalDropdown();
+
 
 
 //find -type f -exec dos2unix {} +

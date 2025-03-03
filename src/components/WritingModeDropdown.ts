@@ -42,6 +42,7 @@ export function addWritingModeDropdown(leftPaneId: string): void {
         if (buttonsContainer) {
             buttonsContainer.style.writingMode = WritingModedropdown.value;
             textWritingMode.textContent = WritingModedropdown.value;
+            console.log('Change WritingModedropdown');
         } else {
             console.error('Buttons container not found');
         }

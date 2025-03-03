@@ -49,6 +49,7 @@ export function addFlexDirectionDropdown(leftPaneId: string): void {
       if (buttonsContainer) {
           buttonsContainer.style.flexDirection = flexDirectionDropdown.value;
           textFlexDirection.textContent = flexDirectionDropdown.value;
+          console.log("Change flexDirectionDropdown");
       } else {
           console.error("Buttons container not found");
       }
