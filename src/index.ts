@@ -6,12 +6,15 @@ import { showFlexDirectionDropdown } from "./components/showFlexDirectionDropdow
 
 import { addWritingModeDropdown } from "./components/WritingModeDropdown";
 
+import {addJustifyContentDropdown} from "./components/JustifyContentDropdown";
 import { showJustifyContentDropdown } from "./components/showJustifyContentDropdown";
 import { hideJustifyContentDropdown } from "./components/hideJustifyContentDropdown";
 
+import {addFlexWrapDropdown} from "./components/FlexWrapDropdown";
 import { hideFlexWrapDropdown } from "./components/hideFlexWrapDropdown";
 import { showFlexWrapDropdown } from "./components/showFlexWrapDropdown";
 
+import {addJustifyVerticalDropdown} from "./components/JustifyVerticalDropdown";
 import { hideJustifyVerticalDropdown } from "./components/hideJustifyVerticalDropdown";
 import { showJustifyVerticalDropdown } from "./components/showJustifyVerticalDropdown";
 
@@ -25,11 +28,8 @@ const houtputDiv = document.getElementById('hi-output') as HTMLElement;
 const wInput = document.getElementById('w-Input') as HTMLInputElement;
 const woutputDiv = document.getElementById('w-output') as HTMLElement;
   //const generatedHtmlTextarea = document.getElementById('generated-html') as HTMLTextAreaElement;
-const displayDropdown = document.getElementById('display-dropdown') as HTMLSelectElement;
-const flexDirectionDropdown= document.getElementById('flex-direction-dropdown') as HTMLSelectElement;
-const justifyVerticaldropdown= document.getElementById('justify-vertical-dropdown') as HTMLSelectElement;
-const flexWrapDropdown = document.getElementById('flex-wrap-dropdown') as HTMLSelectElement;
-const dropdownWritingMode = document.getElementById('writing-mode-dropdown') as HTMLSelectElement;
+//const displayDropdown = document.getElementById('display-dropdown') as HTMLSelectElement;
+
 var buttonData = [
   'Connect', 'Disconnect', 'Reset','Available', 'Preparing',  'Charging', 
   'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction', 
@@ -47,9 +47,14 @@ interactiveDiv.style.width = wInput.value+'px';
 generateButtons(buttonData, 'buttons-container', 'item-list');
 
 // Инициализация выпадающих списков
-addDisplayDropdown("left-pane");
+//addDisplayDropdown("left-pane");
+
+addFlexWrapDropdown("left-pane");
+addJustifyVerticalDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
+addJustifyContentDropdown("left-pane");
 addWritingModeDropdown("left-pane");
+
 
 generateHtmlButton.addEventListener('click', () => {
     if (interactiveDiv) {
@@ -100,45 +105,42 @@ wInput.addEventListener('input', () => {
   interactiveDiv.style.width=wnumberValue+'px'
 });
 
-function chooseDisplayDropdown(): void {
-  const displayDropdown = document.getElementById("display-dropdown") as HTMLSelectElement;
-  if (displayDropdown.value === "flex") {
-    // Показываем настройки для Flexbox
-    showFlexDirectionDropdown();
-    showFlexWrapDropdown();
-    showJustifyVerticalDropdown();
-    showJustifyContentDropdown();
-} else if (displayDropdown.value === "grid") {
-    // Показываем настройки для Grid
-    hideJustifyVerticalDropdown();
-    hideFlexDirectionDropdown();
-    hideFlexWrapDropdown();
-    showJustifyContentDropdown();    
-} else if (displayDropdown.value === "block" || displayDropdown.value === "none" || displayDropdown.value === "inline-block") {
-    // Скрываем все специфические настройки
-    hideFlexDirectionDropdown();
-    hideJustifyVerticalDropdown();
-    hideFlexWrapDropdown();
-    showJustifyContentDropdown();      
-}
+// function chooseDisplayDropdown(): void {
+//   const displayDropdown = document.getElementById("display-dropdown") as HTMLSelectElement;
+//   if (displayDropdown.value === "flex") {
+//     // Показываем настройки для Flexbox
+//     showFlexDirectionDropdown();
+//     showFlexWrapDropdown();
+//     showJustifyVerticalDropdown();
+//     showJustifyContentDropdown();
+// } else if (displayDropdown.value === "grid") {
+//     // Показываем настройки для Grid
+//     hideJustifyVerticalDropdown();
+//     hideFlexDirectionDropdown();
+//     hideFlexWrapDropdown();
+//     showJustifyContentDropdown();    
+// } else if (displayDropdown.value === "block" || displayDropdown.value === "none" || displayDropdown.value === "inline-block") {
+//     // Скрываем все специфические настройки
+//     hideFlexDirectionDropdown();
+//     hideJustifyVerticalDropdown();
+//     hideFlexWrapDropdown();
+//     showJustifyContentDropdown();      
+// }}
 
-}
-showJustifyVerticalDropdown();
-//add elements to site
-//addWritingModeDropdown("left-pane");
-
-//addDisplayDropdown("left-pane");
-
-//addFlexDirectionDropdown("left-pane");
-
-
-chooseDisplayDropdown();
-
-interactiveDiv.style.alignItems = displayDropdown.value;
+//chooseDisplayDropdown();
+const flexDirectionDropdown= document.getElementById('flex-direction-dropdown') as HTMLSelectElement;
+//interactiveDiv.style.alignItems = displayDropdown.value;
 interactiveDiv.style.flexDirection = flexDirectionDropdown.value;
+const flexWrapDropdown = document.getElementById('flex-wrap-dropdown') as HTMLSelectElement;
 interactiveDiv.style.flexWrap = flexWrapDropdown.value;
+const justifyVerticaldropdown= document.getElementById('justify-vertical-dropdown') as HTMLSelectElement;
 interactiveDiv.style.justifyContent = justifyVerticaldropdown.value;
-interactiveDiv.style.writingMode = dropdownWritingMode.value;
+const WritingModedropdown = document.getElementById('writing-mode-dropdown') as HTMLSelectElement;
+interactiveDiv.style.writingMode = WritingModedropdown.value;
+
+//hideFlexDirectionDropdown();
+//hideFlexWrapDropdown();
+//hideJustifyVerticalDropdown();
 
 
 //find -type f -exec dos2unix {} +

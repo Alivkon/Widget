@@ -13,12 +13,12 @@ export function addWritingModeDropdown(leftPaneId: string): void {
     containerWritingMode.style.display = "flex";
     containerWritingMode.id = "container-writing-mode";
     // Создаём выпадающий список
-    const dropdownWritingMode = document.createElement("select");
-    dropdownWritingMode.id = "writing-mode-dropdown";
-    dropdownWritingMode.style.width = "200px";  
-    dropdownWritingMode.style.marginBottom = "10px";
-    dropdownWritingMode.style.padding = "10px";
-    dropdownWritingMode.style.display = "flex";
+    const WritingModedropdown = document.createElement("select");
+    WritingModedropdown.id = "writing-mode-dropdown";
+    WritingModedropdown.style.width = "200px";  
+    WritingModedropdown.style.marginBottom = "10px";
+    WritingModedropdown.style.padding = "10px";
+    WritingModedropdown.style.display = "flex";
   
   
     // Слова для выпадающего списка
@@ -27,7 +27,7 @@ export function addWritingModeDropdown(leftPaneId: string): void {
         const opt = document.createElement("option");
         opt.value = option;
         opt.textContent = option;
-        dropdownWritingMode.appendChild(opt);
+        WritingModedropdown.appendChild(opt);
     });
   
     // Создаём текстовое поле
@@ -37,11 +37,11 @@ export function addWritingModeDropdown(leftPaneId: string): void {
     textWritingMode.textContent = options[0];
     
     // Обработчик изменений для выпадающего списка
-    dropdownWritingMode.addEventListener("change", () => {
+    WritingModedropdown.addEventListener("change", () => {
             const buttonsContainer = document.getElementById('buttons-container');
         if (buttonsContainer) {
-            buttonsContainer.style.writingMode = dropdownWritingMode.value;
-            textWritingMode.textContent = dropdownWritingMode.value;
+            buttonsContainer.style.writingMode = WritingModedropdown.value;
+            textWritingMode.textContent = WritingModedropdown.value;
         } else {
             console.error('Buttons container not found');
         }
@@ -55,7 +55,7 @@ export function addWritingModeDropdown(leftPaneId: string): void {
     // Добавляем элементы в контейнер, а затем в левую панель
     containerWritingMode.appendChild(textHeadwritingMode);
     containerWritingMode.appendChild(lineBreak); // Добавляем перевод строки
-    containerWritingMode.appendChild(dropdownWritingMode);
+    containerWritingMode.appendChild(WritingModedropdown);
     containerWritingMode.appendChild(textWritingMode);
     leftPane.appendChild(containerWritingMode);
   }
