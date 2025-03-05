@@ -1,5 +1,8 @@
 //display ["flex","grid", "block", "none", "inline-block"]
+import {chooseDisplayDropdown} from "./chooseDisplayDropdown";
 export function addDisplayDropdown(leftPaneId: string): void {
+    
+    // Ищем левую панель
     const leftPane = document.getElementById("left-pane");
     if (!leftPane) {
         console.error(`Element with ID '${leftPaneId}' not found.`);
@@ -20,7 +23,7 @@ export function addDisplayDropdown(leftPaneId: string): void {
     displayDropdown.style.marginBottom = "10px";
     displayDropdown.value = "flex";
   
-    const options = ["flex", "block", "none", "inline-block"];
+    const options = ["flex", "block", "inline-block"];
     options.forEach(option => {
         const opt = document.createElement("option");
         opt.value = option;
@@ -34,10 +37,10 @@ export function addDisplayDropdown(leftPaneId: string): void {
   
     displayDropdown.addEventListener("change", () => {
     textField.textContent = displayDropdown.value;
-  //  chooseDisplayDropdown(); // Call the function here
     const buttonsContainer = document.getElementById("buttons-container");
         if (buttonsContainer) {
             buttonsContainer.style.display = displayDropdown.value;
+            console.log("Change displayDropdown");
         } else {
             console.error("Buttons container not found");
         }
@@ -51,7 +54,8 @@ export function addDisplayDropdown(leftPaneId: string): void {
     // Добавляем элементы в контейнер, а затем в левую панель
     containerDisplay.appendChild(textHeadDisplay);
     containerDisplay.appendChild(lineBreak); // Добавляем перевод строки
-     containerDisplay.appendChild(displayDropdown);
+    containerDisplay.appendChild(displayDropdown);
     containerDisplay.appendChild(textField);
     leftPane.appendChild(containerDisplay);
+    chooseDisplayDropdown();
   }

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>SPA with TypeScript</title>
+    <title>Widget</title>
     <link
       rel="stylesheet"
       href="./src/style.css"
@@ -11,25 +11,13 @@
   <body>
     <div id="container">
       <div id="left-pane">
+        <p>Выберите необходимые элементы </p>  
         <ul id="item-list">
           <!-- Items with checkboxes will be added dynamically -->
         </ul>
-        Установите высоту виджета <br />
-        <input
-          type="input"
-          id="hi-Input"
-          placeholder="100"
-        />
-        <div id="hi-output">Высота виджета: 100</div>
-
-        Установите ширину виджета <br />
-        <input
-          type="input"
-          id="w-Input"
-          placeholder="400"
-        />
-        <div id="w-output">Ширина виджета: 600</div>
-
+         <!-- Добавляем горизонтальную линию -->
+        <hr>
+        <p>Введите размер кнопок</p>
         <input
           type="input"
           id="h-butn-Input"
@@ -43,9 +31,59 @@
           placeholder="100"
         />
         <div id="w-butn-output">Ширина кнопки: 100</div>
-      </div>
 
-      <div id="right-pane">
+                  <!-- Кнопка для вызова окна изменения цвета-->
+        <div id="colorPickerButtons" class="color-picker-buttons">
+          <p>Выберите цвет кнопок</p>
+          <div class="color-picker-button">
+            <input
+              type="color"
+              id="color-picker-buttons"
+              value="#f2f2f2"
+            />
+          </div>
+        </div>
+          <!-- Добавляем горизонтальную линию -->
+          <hr>
+<ul id="item-list">
+  <!-- Items with checkboxes will be added dynamically -->
+</ul>
+Установите высоту виджета <br />
+<input
+  type="input"
+  id="hi-Input"
+  placeholder="100"
+/>
+<div id="hi-output">Высота виджета: 100</div>
+
+Установите ширину виджета <br />
+<input
+  type="input"
+  id="w-Input"
+  placeholder="400"
+/>
+<div id="w-output">Ширина виджета: 600</div>
+        <!-- Кнопка для вызова окна изменения цвета-->
+        <div id="colorPicker" class="color-picker">
+          <p>Выберите цвет фона виджета</p>
+          <div class="color-picker-body">
+            <input
+              type="color"
+              id="color-picker-body"
+              value="#ff0000"
+            />
+          </div>
+        </div>
+          <!-- Добавляем горизонтальную линию -->
+          <hr>
+    <p>Параметры выравнивания</p>     
+            <!-- Добавляем горизонтальную линию -->
+          <hr>  
+</div>
+
+
+<!-- Кнопка для вызова окна -->
+     <div id="right-pane">
         <!-- <div id="interactive-div" class="border"> 
             Station name <br>
             Station adress-->
@@ -53,10 +91,9 @@
           id="buttons-container"
           class="border"
         >
-          <!-- Buttons will be added dynamically -->
+          <!-- Buttons be added dynamically -->
         </div>
         <ul id="itemList"></ul>
-        <!-- </div> -->
         <button id="generate-html-button">Generate HTML</button>
         <textarea
           id="generated-html"

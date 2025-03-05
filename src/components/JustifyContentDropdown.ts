@@ -67,6 +67,7 @@ export function addJustifyContentDropdown(leftPaneId: string): void {
         if (buttonsContainer) {
             buttonsContainer.style.justifyContent = justifyContentDropdown.value;
             textJustifyContent.textContent = justifyContentDropdown.value;
+            console.log("Change justifyContentDropdown");
         } else {
             console.error("Buttons container not found");
         }

@@ -31,24 +31,22 @@ export function addJustifyVerticalDropdown(leftPaneId: string): void {
     const textVerticalAlign = document.createElement("p");
     textVerticalAlign.id = "text-justify-vertical-output";
     textVerticalAlign.textContent = options[0];
+
     // Обработчик изменений для выпадающего списка
     justifyVerticaldropdown.addEventListener("change", () => {
-      textVerticalAlign.textContent = justifyVerticaldropdown.value; // Обновляем текстовое поле при выборе
-        const buttonsContainer = document.getElementById('buttons-container');
-        if (buttonsContainer) {
-            // Устанавливаем стиль align-items для buttons-container
-            buttonsContainer.style.alignItems = justifyVerticaldropdown.value;
-            console.info('buttonsContainer.style.alignItems = ' + justifyVerticaldropdown.value);
-        } else {
-            console.error('Buttons container not found');
-        }
+    textVerticalAlign.textContent = justifyVerticaldropdown.value; // Обновляем текстовое поле при выборе
+    const buttonsContainer = document.getElementById('buttons-container');
+    console.log('Change justifyVerticaldropdown');
+    if (buttonsContainer) {
+        // Устанавливаем стиль align-items для buttons-container
+        textVerticalAlign.textContent = justifyVerticaldropdown.value;            
+        buttonsContainer.style.alignItems = justifyVerticaldropdown.value;
+        console.info('buttonsContainer.style.alignItems = ' + justifyVerticaldropdown.value);
+    } else {
+        console.error('Buttons container not found');
+    }
     });
-  
-    // Инициализируем текстовое поле 
-    textVerticalAlign.textContent = justifyVerticaldropdown.value;
-    const textFieldHorizontAlign = document.createElement('p');
-    textFieldHorizontAlign.id = 'textOutput';
-  
+
     // Создаём заголовок
     const textHeadVerticalAlign = document.createTextNode("alignItems");
   

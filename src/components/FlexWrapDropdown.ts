@@ -41,6 +41,7 @@ export function addFlexWrapDropdown(leftPaneId: string): void {
   
     flexWrapDropdown.addEventListener("change", () => {
         const buttonsContainer = document.getElementById("buttons-container");
+        console.log("Change flexWrapDropdown");
         if (buttonsContainer) {
           buttonsContainer.style.flexWrap = flexWrapDropdown.value; // Исправлено
           textFlexWrapDirection.textContent = flexWrapDropdown.value;
