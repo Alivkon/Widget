@@ -19,8 +19,6 @@ export function addWritingModeDropdown(leftPaneId: string): void {
     WritingModedropdown.style.marginBottom = "10px";
     WritingModedropdown.style.padding = "10px";
     WritingModedropdown.style.display = "flex";
-  
-  
     // Слова для выпадающего списка
     const options = ["horizontal-tb","vertical-rl","vertical-lr","sideways-rl","sideways-lr"];
     options.forEach(option => {
@@ -39,14 +37,16 @@ export function addWritingModeDropdown(leftPaneId: string): void {
     // Обработчик изменений для выпадающего списка
     WritingModedropdown.addEventListener("change", () => {
             const buttonsContainer = document.getElementById('buttons-container');
+            console.log('Change WritingModedropdown');
         if (buttonsContainer) {
             buttonsContainer.style.writingMode = WritingModedropdown.value;
             textWritingMode.textContent = WritingModedropdown.value;
-            console.log('Change WritingModedropdown');
+            console.log('Change WritingModeDropdown');
         } else {
             console.error('Buttons container not found');
         }
     });
+
     // Создаём заголовок
     const textHeadwritingMode = document.createTextNode("writingMode");
   

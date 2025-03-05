@@ -78,5 +78,28 @@
   #hi-output {
     border-width: 10px;
     border-radius: 10px;
-
   }
+
+
+
+        .tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+        .tooltip-text {
+            visibility: hidden;
+            background-color: black;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+        }
+

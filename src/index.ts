@@ -21,14 +21,17 @@ import { showJustifyVerticalDropdown } from "./components/showJustifyVerticalDro
 const interactiveDiv = document.getElementById('buttons-container')!;
 const generateHtmlButton = document.getElementById('generate-html-button')!;
 const generatedHtmlTextarea = document.getElementById('generated-html')! as HTMLTextAreaElement;
-  // Получаем элементы DOM по их ID. Важно указать тип, чтобы TypeScript знал, что это HTMLInputElement и HTMLElement
 const hiInput = document.getElementById('hi-Input') as HTMLInputElement;
 const houtputDiv = document.getElementById('hi-output') as HTMLElement;
 const wInput = document.getElementById('w-Input') as HTMLInputElement;
 const woutputDiv = document.getElementById('w-output') as HTMLElement;
-  //const generatedHtmlTextarea = document.getElementById('generated-html') as HTMLTextAreaElement;
 //const displayDropdown = document.getElementById('display-dropdown') as HTMLSelectElement;
 const colorPickerBody = document.getElementById('color-picker-body') as HTMLInputElement;
+const hButnInput= document.getElementById('h-butn-Input') as HTMLInputElement;
+const hButtonOutput = document.getElementById('h-butn-output') as HTMLElement;
+const wButnInput= document.getElementById('w-butn-Input') as HTMLInputElement;
+const wButtonOutput = document.getElementById('w-butn-output') as HTMLElement;
+
 
 var buttonData = [
   'Connect', 'Disconnect', 'Reset','Available', 'Preparing',  'Charging', 
@@ -47,15 +50,14 @@ interactiveDiv.style.width = wInput.value+'px';
 generateButtons(buttonData, 'buttons-container', 'item-list');
 
 // Инициализация выпадающих списков
-//addDisplayDropdown("left-pane");
-
+addDisplayDropdown("left-pane");
 addFlexWrapDropdown("left-pane");
 addJustifyVerticalDropdown("left-pane");
 addFlexDirectionDropdown("left-pane");
 addJustifyContentDropdown("left-pane");
 addWritingModeDropdown("left-pane");
 
-
+// События
 generateHtmlButton.addEventListener('click', () => {
     if (interactiveDiv) {
       const htmlContent = interactiveDiv.outerHTML;
@@ -64,6 +66,73 @@ generateHtmlButton.addEventListener('click', () => {
       console.error('Interactive div not found');
     }
 });
+
+hButnInput.addEventListener('input', () => {
+  // Получаем текущее значение из поля ввода. 
+  let hi_inputButnValue = hButnInput.value;
+//  Проверяем, не пустое ли поле ввода. Если пустое, ничего не делаем.
+  if (hi_inputButnValue === "") {
+    hButtonOutput.textContent = ""; // Очищаем вывод
+      return;
+  }
+  // Преобразуем введенное значение в число с помощью parseInt. 
+  // Основание 10 указывает на десятичную систему счисления.
+  var numberButtonValue: number = parseInt(hi_inputButnValue, 10);
+  // Проверяем, удалось ли преобразование в число. isNaN (is Not a Number) возвращает true, 
+  // если значение не является числом.
+  if (isNaN(numberButtonValue)) {
+    hButtonOutput.textContent = "Введено некорректное число"; // Выводим сообщение об ошибке
+      hButnInput.value = ""; // Очищаем поле ввода
+      return; // Прерываем выполнение функции
+  }
+  // Если все проверки пройдены успешно, выводим число под полем ввода.
+  console.log("numberButtonValue = %d", numberButtonValue);
+  hButtonOutput.textContent = "Высота кнопки: " + numberButtonValue;
+  const interactiveButton = document.getElementById('interactiveButton') as HTMLButtonElement;
+
+  if (interactiveButton) {
+    interactiveButton.style.height = numberButtonValue + 'px';
+  } else {
+    console.error('Interactive button not found');
+  }
+  console.log("interactiveButton.style.height = %s", interactiveButton.style.height);
+  console.log("hi_inputButnValue = %s", hi_inputButnValue);
+  console.log("hButnInput.value = %s", hButnInput.value);
+});
+
+wButnInput.addEventListener('input', () => {
+  // Получаем текущее значение из поля ввода. 
+  let widht_inputButnValue = wButnInput.value;
+//  Проверяем, не пустое ли поле ввода. Если пустое, ничего не делаем.
+  if (widht_inputButnValue === "") {
+    wButtonOutput.textContent = ""; // Очищаем вывод
+      return;
+  }
+  // Преобразуем введенное значение в число с помощью parseInt. 
+  // Основание 10 указывает на десятичную систему счисления.
+  var w_numberButtonValue: number = parseInt(widht_inputButnValue, 10);
+  // Проверяем, удалось ли преобразование в число. isNaN (is Not a Number) возвращает true, 
+  // если значение не является числом.
+  if (isNaN(w_numberButtonValue)) {
+    wButtonOutput.textContent = "Введено некорректное число"; // Выводим сообщение об ошибке
+      wButnInput.value = ""; // Очищаем поле ввода
+      return; // Прерываем выполнение функции
+  }
+  // Если все проверки пройдены успешно, выводим число под полем ввода.
+  console.log("w_numberButtonValue = %d", w_numberButtonValue);
+  wButtonOutput.textContent = "Ширина кнопки: " + w_numberButtonValue;
+  const interactiveButton = document.getElementById('interactiveButton') as HTMLButtonElement;
+
+  if (interactiveButton) {
+    interactiveButton.style.height = w_numberButtonValue + 'px';
+  } else {
+    console.error('Interactive button not found');
+  }
+  console.log("interactiveButton.style.height = %s", interactiveButton.style.width);
+  console.log("hi_inputButnValue = %s", widht_inputButnValue);
+  console.log("hButnInput.value = %s", wButnInput.value);
+});
+
 hiInput.addEventListener('input', () => {
     // Получаем текущее значение из поля ввода. 
     let hi_inputValue = hiInput.value;
@@ -116,38 +185,23 @@ if (colorPickerBody) {
 }
 
 
-// function chooseDisplayDropdown(): void {
-//   const displayDropdown = document.getElementById("display-dropdown") as HTMLSelectElement;
-//   if (displayDropdown.value === "flex") {
-//     // Показываем настройки для Flexbox
-//     showFlexDirectionDropdown();
-//     showFlexWrapDropdown();
-//     showJustifyVerticalDropdown();
-//     showJustifyContentDropdown();
-// } else if (displayDropdown.value === "grid") {
-//     // Показываем настройки для Grid
-//     hideJustifyVerticalDropdown();
-//     hideFlexDirectionDropdown();
-//     hideFlexWrapDropdown();
-//     showJustifyContentDropdown();    
-// } else if (displayDropdown.value === "block" || displayDropdown.value === "none" || displayDropdown.value === "inline-block") {
-//     // Скрываем все специфические настройки
-//     hideFlexDirectionDropdown();
-//     hideJustifyVerticalDropdown();
-//     hideFlexWrapDropdown();
-//     showJustifyContentDropdown();      
-// }}
 
-//chooseDisplayDropdown();
+
+const displayDropdown = document.getElementById('display-dropdown') as HTMLSelectElement;
+interactiveDiv.style.display = displayDropdown.value;
 const flexDirectionDropdown= document.getElementById('flex-direction-dropdown') as HTMLSelectElement;
-//interactiveDiv.style.alignItems = displayDropdown.value;
 interactiveDiv.style.flexDirection = flexDirectionDropdown.value;
+// const alignItemsDropdown = document.getElementById('align-items-dropdown') as HTMLSelectElement;
+// interactiveDiv.style.alignItems = alignItemsDropdown.value;
 const flexWrapDropdown = document.getElementById('flex-wrap-dropdown') as HTMLSelectElement;
 interactiveDiv.style.flexWrap = flexWrapDropdown.value;
 const justifyVerticaldropdown= document.getElementById('justify-vertical-dropdown') as HTMLSelectElement;
 interactiveDiv.style.justifyContent = justifyVerticaldropdown.value;
 const WritingModedropdown = document.getElementById('writing-mode-dropdown') as HTMLSelectElement;
 interactiveDiv.style.writingMode = WritingModedropdown.value;
+
+
+
 
 //hideFlexDirectionDropdown();
 //hideFlexWrapDropdown();
