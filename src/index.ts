@@ -19,8 +19,14 @@ import { hideJustifyVerticalDropdown } from "./components/hideJustifyVerticalDro
 import { showJustifyVerticalDropdown } from "./components/showJustifyVerticalDropdown";
 
 const interactiveDiv = document.getElementById('buttons-container')!;
+const interactiveDiv2 = document.getElementById('buttons-container2')!;
+
 const generateHtmlButton = document.getElementById('generate-html-button')!;
+const generateHtmlButton2 = document.getElementById('generate-html-button2')!;
+
 const generatedHtmlTextarea = document.getElementById('generated-html')! as HTMLTextAreaElement;
+const generatedHtmlTextarea2 = document.getElementById('generated-html2')! as HTMLTextAreaElement;
+
 const hiInput = document.getElementById('hi-Input') as HTMLInputElement;
 const houtputDiv = document.getElementById('hi-output') as HTMLElement;
 const wInput = document.getElementById('w-Input') as HTMLInputElement;
@@ -42,9 +48,11 @@ var buttonData = [
 hiInput.style.width = "100px";
 hiInput.value = "100";
 interactiveDiv.style.height = hiInput.value+'px';
+interactiveDiv2.style.height = hiInput.value+'px';
 wInput.style.width = "100px";
 wInput.value = "600";
 interactiveDiv.style.width = wInput.value+'px';
+interactiveDiv2.style.width = wInput.value+'px';
 
 // Генерация кнопок
 generateButtons(buttonData, 'buttons-container', 'item-list');
@@ -66,7 +74,14 @@ generateHtmlButton.addEventListener('click', () => {
       console.error('Interactive div not found');
     }
 });
-
+generateHtmlButton2.addEventListener('click', () => {
+    if (interactiveDiv2) {
+      const htmlContent2 = interactiveDiv2.outerHTML;
+      generatedHtmlTextarea2.value = htmlContent2;
+    } else {
+      console.error('Interactive div2 not found');
+    }
+});
 hButnInput.addEventListener('input', () => {
   // Получаем текущее значение из поля ввода. 
   let hi_inputButnValue = hButnInput.value;
@@ -92,6 +107,7 @@ hButnInput.addEventListener('input', () => {
 
   if (interactiveButton) {
     interactiveButton.style.height = numberButtonValue + 'px';
+    document.querySelectorAll('.movable').forEach(button => (button as HTMLElement).style.height = numberButtonValue + 'px');
   } else {
     console.error('Interactive button not found');
   }
@@ -124,7 +140,8 @@ wButnInput.addEventListener('input', () => {
   const interactiveButton = document.getElementById('interactiveButton') as HTMLButtonElement;
 
   if (interactiveButton) {
-    interactiveButton.style.height = w_numberButtonValue + 'px';
+    interactiveButton.style.width = w_numberButtonValue + 'px';
+    document.querySelectorAll('.movable').forEach(button => (button as HTMLElement).style.width = w_numberButtonValue + 'px');
   } else {
     console.error('Interactive button not found');
   }
@@ -156,6 +173,7 @@ hiInput.addEventListener('input', () => {
     // Если все проверки пройдены успешно, выводим число под полем ввода.
     houtputDiv.textContent = "Высота виджета: " + numberValue;
     interactiveDiv.style.height=numberValue+'px'
+    interactiveDiv2.style.height=numberValue+'px'
 });
 wInput.addEventListener('input', () => {
   let winputValue = wInput.value;
@@ -172,12 +190,14 @@ wInput.addEventListener('input', () => {
   }
   woutputDiv.textContent = "Ширина виджета: " + wnumberValue;
   interactiveDiv.style.width=wnumberValue+'px'
+  interactiveDiv2.style.width=wnumberValue+'px'
 });
 
 
 if (colorPickerBody) {
   colorPickerBody.addEventListener('input', () => {
     interactiveDiv.style.backgroundColor = colorPickerBody.value;
+    interactiveDiv2.style.backgroundColor = colorPickerBody.value;    
     console.log("colorPickerBody.value = %s", colorPickerBody.value);
   });
 } else {
@@ -201,12 +221,61 @@ const WritingModedropdown = document.getElementById('writing-mode-dropdown') as 
 interactiveDiv.style.writingMode = WritingModedropdown.value;
 
 
+// Получаем все кнопки
+const frame = document.getElementById('buttons-container2') as HTMLElement;
+const buttons = Array.from(document.querySelectorAll('.movable')) as HTMLButtonElement[];
 
+// Переменные для хранения состояния
+let isDragging = false; // Флаг для отслеживания перетаскивания
+let currentButton: HTMLButtonElement | null = null; // Текущая перемещаемая кнопка
+let offsetX = 0; // Относительная позиция по X
+let offsetY = 0; // Относительная позиция по Y
 
-//hideFlexDirectionDropdown();
-//hideFlexWrapDropdown();
-//hideJustifyVerticalDropdown();
+// Обработчик начала перетаскивания
+function handleMouseDown(event: MouseEvent, button: HTMLButtonElement) {
+  isDragging = true;
+  currentButton = button;
 
+  // Рассчитываем относительные координаты внутри элемента
+  const rect = button.getBoundingClientRect();
+  offsetX = event.clientX - rect.left;
+  offsetY = event.clientY - rect.top;
+}
 
+// Обработчик движения мыши
+function handleMouseMove(event: MouseEvent) {
+  if (!isDragging || !currentButton) return;
+
+  // Рассчитываем новую позицию
+  const frameRect = frame.getBoundingClientRect();
+  const newLeft = event.clientX - frameRect.left - offsetX;
+  const newTop = event.clientY - frameRect.top - offsetY;
+
+  // Ограничиваем движение внутри фрейма
+  const maxLeft = frame.offsetWidth - currentButton.offsetWidth;
+  const maxTop = frame.offsetHeight - currentButton.offsetHeight;
+
+  const boundedLeft = Math.max(0, Math.min(newLeft, maxLeft));
+  const boundedTop = Math.max(0, Math.min(newTop, maxTop));
+
+  // Устанавливаем новую позицию
+  currentButton.style.left = `${boundedLeft}px`;
+  currentButton.style.top = `${boundedTop}px`;
+}
+
+// Обработчик окончания перетаскивания
+function handleMouseUp() {
+  isDragging = false;
+  currentButton = null;
+}
+
+// Добавляем обработчики событий для каждой кнопки
+buttons.forEach((button) => {
+  button.addEventListener('mousedown', (event) => handleMouseDown(event, button));
+});
+
+// Обработчики для всего документа
+document.addEventListener('mousemove', handleMouseMove);
+document.addEventListener('mouseup', handleMouseUp);
 
 //find -type f -exec dos2unix {} +
