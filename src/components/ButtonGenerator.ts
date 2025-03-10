@@ -1,53 +1,74 @@
-export function generateButtons(buttonData: string[], buttonsContainerId: string, itemListId: string): void {
-    const buttonsContainer = document.getElementById("buttons-container");
-    const itemList = document.getElementById("item-list");
+export function generateButtons(
+  buttonData: string[],
+  buttonsContainerId: string,
+  itemListId: string
+): void {
+  // Получаем контейнеры для кнопок и списка чекбоксов
+  const buttonsContainer = document.getElementById(buttonsContainerId);
+  const itemList = document.getElementById(itemListId);
 
-    if (!buttonsContainer || !itemList) {
-        console.error("Buttons container or item list not found");
-        return;
-    }
+  if (!buttonsContainer || !itemList) {
+    console.error("Контейнеры для кнопок или списка не найдены");
+    return;
+  }
 
-    buttonData.forEach((text, index) => {
-        const button = document.createElement('button');
-        button.id = `interactiveButton`;
-        button.textContent = text;
-       // button.className = 'interactiveBtn';
-        button.style.width = '100px';
-        button.style.height = '50px';
-        button.style.display = 'none';
-        buttonsContainer.appendChild(button);
+  // Проходим по каждому элементу данных для кнопок
+  buttonData.forEach((text, index) => {
+    // Создаем кнопку
+    const button = document.createElement("button");
+    button.id = `interactiveButton_${index}`;
+    button.textContent = text;
+    button.style.width = "100px";
+    button.style.height = "50px";
+    button.style.position = "absolute"; // Для перемещения
+    button.style.display = "none"; // Изначально скрыта
+    button.style.left = '0px'; // Начальная позиция
+    button.style.top = '0px'; // Начальная позиция
 
-        const listItem = document.createElement('li');
-        listItem.style.display = 'flex';
-        listItem.style.alignItems = 'center';
+    // Добавляем кнопку в контейнер
+    buttonsContainer.appendChild(button);
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = `item-checkbox-${index}`;
-        checkbox.addEventListener('change', (event) => {
-            button.style.display = (event.target as HTMLInputElement).checked ? 'inline-block' : 'none';
-        });
+    // Создаем элемент списка с чекбоксом
+    const listItem = document.createElement("li");
+    listItem.style.display = "flex";
+    listItem.style.alignItems = "center";
 
-        const label = document.createElement('label');
-        label.htmlFor = `item-checkbox-${index}`;
-        label.textContent = text;
+    // Создаем чекбокс и метку
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = `item-checkbox-${index}`;
 
-        listItem.appendChild(checkbox);
-        listItem.appendChild(label);
-        itemList.appendChild(listItem);
+    const label = document.createElement("label");
+    label.htmlFor = checkbox.id;
+    label.textContent = text;
 
-      //  button.style.display = 'none';
-      const colorPickerButtons = document.getElementById('color-picker-buttons') as HTMLInputElement;
+    // Добавляем обработчик для чекбокса
+    checkbox.addEventListener("change", (event) => {
+      const isChecked = (event.target as HTMLInputElement).checked;
+      button.style.display = isChecked ? "block" : "none";
+    });
 
-      if (colorPickerButtons) {
-        colorPickerButtons.addEventListener('input', () => {
-          button.style.backgroundColor= colorPickerButtons.value;
-          console.log("buttonColor = %s", colorPickerButtons.value);
-          console.log("colorPickerButtons.value = %s", colorPickerButtons.value);
-        });
-      } else {
-        console.error('Element with ID "color-picker-body" not found.');
-      }
-});
-    
+    // Собираем элемент списка
+    listItem.appendChild(checkbox);
+    listItem.appendChild(label);
+    itemList.appendChild(listItem);
+  });
+
+  // Обработчик изменения цвета кнопок
+  const colorPicker = document.getElementById(
+    "color-picker-buttons"
+  ) as HTMLInputElement;
+
+  if (colorPicker) {
+    colorPicker.addEventListener("input", () => {
+      const buttons = Array.from(
+        buttonsContainer!.children
+      ) as HTMLButtonElement[];
+      buttons.forEach((btn) => {
+        btn.style.backgroundColor = colorPicker.value;
+      });
+    });
+  } else {
+    console.error("Цветовой пикер для кнопок не найден");
+  }
 }
