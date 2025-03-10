@@ -46,12 +46,67 @@ interactiveDiv.style.width = wInput.value + 'px';
 generateButtons(buttonData, 'buttons-container', 'item-list');
 
 
+// Генерация чекбоксов без кнопок
+buttonData.forEach((text, index) => {
+  const listItem = document.createElement('li');
+  listItem.style.display = 'flex';
+  listItem.style.alignItems = 'center';
 
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.id = `item-checkbox-${index}`;
 
+  const label = document.createElement('label');
+  label.htmlFor = `item-checkbox-${index}`;
+  label.textContent = text;
+  const itemList = document.getElementById('item-list')!;
+  // Обработчик события для чекбокса
+  checkbox.addEventListener('change', (event) => {
+    if ((event.target as HTMLInputElement).checked) {
+      // Если чекбокс отмечен, создаем кнопку
+      createButton(text);
+    } else {
+      // Если чекбокс снят, удаляем кнопку
+      removeButton(text);
+    }
+  });
 
+  listItem.appendChild(checkbox);
+  listItem.appendChild(label);
+  itemList.appendChild(listItem);
+});
+// Функция для создания кнопки
+function createButton(text: string): void {
+  const existingButton = Array.from(interactiveDiv.children).find(
+    (child) => (child as HTMLElement).textContent === text
+  );
 
+  if (!existingButton) {
+    const button = document.createElement('button');
+    button.id = `interactiveButton${buttonData.indexOf(text)}`;
+    button.textContent = text;
+    button.style.width = '100px';
+    button.style.height = '50px';
+    button.style.position = 'absolute'; // Для перемещения
+    interactiveDiv.appendChild(button);
 
+    // Добавляем обработчики для перетаскивания
+    button.addEventListener('mousedown', (event) =>
+      handleMouseDown(event, button)
+    );
+  }
+}
 
+// Функция для удаления кнопки
+function removeButton(text: string): void {
+  const buttonToRemove = Array.from(interactiveDiv.children).find(
+    (child) => (child as HTMLElement).textContent === text
+  );
+
+  if (buttonToRemove) {
+    interactiveDiv.removeChild(buttonToRemove as Node);
+  }
+}
 
 
 // Инициализация выпадающих списков
