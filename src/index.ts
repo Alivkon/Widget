@@ -280,3 +280,52 @@ buttons.forEach(button => {
 
 document.addEventListener('mousemove', handleMouseMove);
 document.addEventListener('mouseup', handleMouseUp);
+
+
+
+
+document.querySelectorAll<HTMLElement>('.mode-button').forEach(button => {
+  button.addEventListener('click', () => {
+    // Сбрасываем активное состояние
+    document.querySelectorAll('.mode-button').forEach(btn => btn.classList.remove('active'));
+    
+    // Устанавливаем активное состояние для текущей кнопки
+    button.classList.add('active');
+    
+    // Получаем выбранный режим
+    const mode = button.getAttribute('data-mode');
+    
+    // Управление функционалом
+    if (mode === 'manual') {
+      enableManualMode();
+    } else if (mode === 'auto') {
+      enableAutoMode();
+    }
+  });
+});
+
+function enableManualMode() {
+  // Включаем ручное перемещение
+  buttons.forEach(button => {
+    button.style.pointerEvents = 'auto';
+    button.style.opacity = '1';
+  });
+  
+  // Блокируем выпадающие списки
+  document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = true);
+}
+
+function enableAutoMode() {
+  // Отключаем ручное перемещение
+  buttons.forEach(button => {
+    button.style.pointerEvents = 'none';
+    button.style.opacity = '0.7';
+  });
+  
+  // Разблокируем выпадающие списки
+  document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = false);
+}
+
+// Инициализация начального состояния
+document.querySelector<HTMLElement>('.mode-button[data-mode="manual"]')?.classList.add('active');
+enableManualMode();
