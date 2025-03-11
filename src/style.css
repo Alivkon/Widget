@@ -54,6 +54,7 @@
   }
    #buttons-container {
     border: 1px solid #000;
+    position: relative;
 
   }
   #buttons-container button {
@@ -102,18 +103,10 @@
             visibility: visible;
         }
 
-/* Стили для фрейма */
-.buttons-container2 {
-  position: relative;
-  /* width: 800px;
-  height: 300px; */
-  border: 1px solid #000;
-  background-color: #f9f9f9;
-}
 
 /* Стили для кнопок */
 .movable {
-  position: absolute;
+  position: relative;
   cursor: move;
 }
 #generated-html2 {
