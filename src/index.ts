@@ -13,6 +13,10 @@ import { showFlexWrapDropdown } from "./components/showFlexWrapDropdown";
 import { addJustifyVerticalDropdown } from "./components/JustifyVerticalDropdown";
 import { hideJustifyVerticalDropdown } from "./components/hideJustifyVerticalDropdown";
 import { showJustifyVerticalDropdown } from "./components/showJustifyVerticalDropdown";
+import { hideDisplayDropdown } from "./components/hideeDisplayDropdown";
+import { showDisplayDropdown } from "./components/showDisplayDropdown";
+import { hideWritingModeDropdown } from "./components/hideWritingModeDropdown";
+import { showWritingModeDropdown } from "./components/showWritingModeDropdown";
 
 const interactiveDiv = document.getElementById('buttons-container')! as HTMLElement;
 const generateHtmlButton = document.getElementById('generate-html-button')! as HTMLButtonElement;
@@ -46,7 +50,7 @@ interactiveDiv.style.width = wInput.value + 'px';
 generateButtons(buttonData, 'buttons-container', 'item-list');
 
 
-// Генерация чекбоксов без кнопок
+// Генерация чекбоксов
 buttonData.forEach((text, index) => {
   const listItem = document.createElement('li');
   listItem.style.display = 'flex';
@@ -87,7 +91,7 @@ function createButton(text: string): void {
     button.textContent = text;
     button.style.width = '100px';
     button.style.height = '50px';
-    button.style.position = 'absolute'; // Для перемещения
+   // button.style.position = 'absolute'; // Для перемещения
     interactiveDiv.appendChild(button);
 
     // Добавляем обработчики для перетаскивания
@@ -309,21 +313,42 @@ function enableManualMode() {
   buttons.forEach(button => {
     button.style.pointerEvents = 'auto';
     button.style.opacity = '1';
+    button.style.position = 'absolute';
   });
   
   // Блокируем выпадающие списки
-  document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = true);
-}
+  //document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = true);
+
+  // Скрываем выпадающие списки
+  hideDisplayDropdown();
+  hideFlexDirectionDropdown();
+  hideJustifyContentDropdown();
+  hideFlexWrapDropdown();
+  hideJustifyVerticalDropdown();
+  hideWritingModeDropdown();
+
+  }
+
 
 function enableAutoMode() {
   // Отключаем ручное перемещение
   buttons.forEach(button => {
     button.style.pointerEvents = 'none';
     button.style.opacity = '0.7';
+    button.style.position = 'inherit';
   });
   
   // Разблокируем выпадающие списки
-  document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = false);
+  //document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = false);
+
+  // Показываем выпадающие списки
+  showDisplayDropdown();
+  showFlexDirectionDropdown();
+  showJustifyContentDropdown();
+  showFlexWrapDropdown();
+  showJustifyVerticalDropdown();
+  showWritingModeDropdown();
+
 }
 
 // Инициализация начального состояния

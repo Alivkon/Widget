@@ -107,18 +107,10 @@
 /* Стили для кнопок */
 .movable {
   position: relative;
-  cursor: move;
-}
-#generated-html2 {
-  margin-top: 10px;
-  width: 95%;
-  height: 350px;
-  padding: 10px;
-  font-family: monospace;
- /* resize: none;*/
+  cursor: grab;
 }
 
-/* Добавьте в style.css */
+/* manual-auto mode */
 .mode-switcher {
   display: flex;
   justify-content: center;
@@ -152,4 +144,5 @@
 .mode-label {
   font-weight: bold;
   color: #333;
+  text-align: center
 }
