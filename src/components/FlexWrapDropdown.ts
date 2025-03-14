@@ -1,5 +1,6 @@
 export function addFlexWrapDropdown(leftPaneId: string): void {
-    const leftPane = document.getElementById(leftPaneId);
+        // Ищем левую панель
+  const leftPane = document.getElementById(leftPaneId);
     if (!leftPane) {
         console.error(`Element with ID '${leftPaneId}' not found.`);
         return;
@@ -11,11 +12,11 @@ export function addFlexWrapDropdown(leftPaneId: string): void {
     containerFlexWrap.id = "container-flex-wrap";
      // Создаём выпадающий список
     const flexWrapDropdown = document.createElement("select");
+    flexWrapDropdown.id = "flex-wrap-dropdown";    
     flexWrapDropdown.style.width = "200px";
     flexWrapDropdown.style.padding = "5px";
     flexWrapDropdown.style.marginBottom = "10px";
     flexWrapDropdown.style.display = "flex";
-    flexWrapDropdown.id = "flex-wrap-dropdown";
     // Слова для выпадающего списка
     const optionsRowWrap = ["wrap", "nowrap", "wrap-reverse"];
     optionsRowWrap.forEach(option => {
@@ -38,13 +39,15 @@ export function addFlexWrapDropdown(leftPaneId: string): void {
     const textFlexWrapDirection = document.createElement("p");
     textFlexWrapDirection.id = "text-wrap-output";
     textFlexWrapDirection.textContent = optionsRowWrap[0];
-  
+
+      // Обработчик изменений для выпадающего списка
     flexWrapDropdown.addEventListener("change", () => {
         const buttonsContainer = document.getElementById("buttons-container");
         console.log("Change flexWrapDropdown");
         if (buttonsContainer) {
           buttonsContainer.style.flexWrap = flexWrapDropdown.value; // Исправлено
           textFlexWrapDirection.textContent = flexWrapDropdown.value;
+          console.log('Change FlexWrapDropdown');        
         } else {
             console.error("Buttons container not found");
         }

@@ -1,4 +1,4 @@
-import { generateButtons } from "./components/ButtonGenerator";
+import { colorButtons } from "./components/colorButtons";
 import { addDisplayDropdown } from "./components/DisplayDropdown";
 import { addFlexDirectionDropdown } from "./components/FlexDirectionDropdown";
 import { hideFlexDirectionDropdown } from "./components/hideFlexDirectionDropdown";
@@ -17,6 +17,7 @@ import { hideDisplayDropdown } from "./components/hideeDisplayDropdown";
 import { showDisplayDropdown } from "./components/showDisplayDropdown";
 import { hideWritingModeDropdown } from "./components/hideWritingModeDropdown";
 import { showWritingModeDropdown } from "./components/showWritingModeDropdown";
+import { chooseDisplayDropdown } from "./components/chooseDisplayDropdown";
 
 const interactiveDiv = document.getElementById('buttons-container')! as HTMLElement;
 const generateHtmlButton = document.getElementById('generate-html-button')! as HTMLButtonElement;
@@ -31,10 +32,11 @@ const wButnInput = document.getElementById('w-butn-Input')! as HTMLInputElement;
 const wButtonOutput = document.getElementById('w-butn-output')! as HTMLElement;
 const colorPickerBody = document.getElementById('color-picker-body')! as HTMLInputElement;
 
+
 const buttonData = [
   'Connect', 'Disconnect', 'Reset', 'Available', 'Preparing', 'Charging',
   'Finishing', 'Reserved', 'Unavailable', 'Faulted', 'Stop Transaction',
-  'Plug`n`Charge', 'EmergencyButton'
+  'Plug`n`Charge', 'Emergency Button'
 ];
 
 // Инициализация размеров виджета
@@ -45,10 +47,6 @@ interactiveDiv.style.height = hiInput.value + 'px';
 wInput.style.width = "100px";
 wInput.value = "600";
 interactiveDiv.style.width = wInput.value + 'px';
-
-// Генерация кнопок
-generateButtons(buttonData, 'buttons-container', 'item-list');
-
 
 // Генерация чекбоксов
 buttonData.forEach((text, index) => {
@@ -91,7 +89,7 @@ function createButton(text: string): void {
     button.textContent = text;
     button.style.width = '100px';
     button.style.height = '50px';
-   // button.style.position = 'absolute'; // Для перемещения
+    button.style.position = 'absolute'; // Для перемещения
     interactiveDiv.appendChild(button);
 
     // Добавляем обработчики для перетаскивания
@@ -112,6 +110,8 @@ function removeButton(text: string): void {
   }
 }
 
+// Цвет кнопок
+colorButtons('buttons-container');
 
 // Инициализация выпадающих списков
 addDisplayDropdown("left-pane");
@@ -130,7 +130,6 @@ generateHtmlButton.addEventListener('click', () => {
     console.error('Interactive div not found');
   }
 });
-
 
 // Обработчик изменения высоты кнопки
 hButnInput.addEventListener('input', () => {
@@ -238,10 +237,36 @@ interactiveDiv.style.justifyContent = justifyVerticalDropdown.value;
 const writingModeDropdown = document.getElementById('writing-mode-dropdown')! as HTMLSelectElement;
 interactiveDiv.style.writingMode = writingModeDropdown.value;
 
+
+
+// Обработчик для display-dropdown
+displayDropdown.addEventListener('change', () => {
+  interactiveDiv.style.display = displayDropdown.value;
+  chooseDisplayDropdown()
+});
+
+// Обработчик для flex-direction-dropdown
+flexDirectionDropdown.addEventListener('change', () => {
+  interactiveDiv.style.flexDirection = flexDirectionDropdown.value;
+});
+
+// Обработчик для flex-wrap-dropdown
+flexWrapDropdown.addEventListener('change', () => {
+  interactiveDiv.style.flexWrap = flexWrapDropdown.value;
+});
+
+// Обработчик для justify-vertical-dropdown (justifyContent)
+justifyVerticalDropdown.addEventListener('change', () => {
+  interactiveDiv.style.justifyContent = justifyVerticalDropdown.value;
+});
+
+// Обработчик для writing-mode-dropdown
+writingModeDropdown.addEventListener('change', () => {
+  interactiveDiv.style.writingMode = writingModeDropdown.value;
+});
+
 // Настройка перемещения кнопок в buttons-container
-
 const buttons = Array.from(document.querySelectorAll('#buttons-container button')) as HTMLButtonElement[];
-
 let isDragging = false;
 let currentButton: HTMLButtonElement | null = null;
 let offsetX = 0;
@@ -278,27 +303,25 @@ function handleMouseUp() {
 
 // обработчики для кнопок:
 buttons.forEach(button => {
-  button.style.position = 'absolute'; 
+  //button.style.position = 'absolute'; 
   button.addEventListener('mousedown', (event) => handleMouseDown(event, button));
 });
-
 document.addEventListener('mousemove', handleMouseMove);
 document.addEventListener('mouseup', handleMouseUp);
 
+buttons.forEach(button => {
+button.style.position = 'flex'; 
+});
 
-
-
+//Обработчик для ручного и автоматического режима
 document.querySelectorAll<HTMLElement>('.mode-button').forEach(button => {
   button.addEventListener('click', () => {
     // Сбрасываем активное состояние
     document.querySelectorAll('.mode-button').forEach(btn => btn.classList.remove('active'));
-    
     // Устанавливаем активное состояние для текущей кнопки
     button.classList.add('active');
-    
     // Получаем выбранный режим
     const mode = button.getAttribute('data-mode');
-    
     // Управление функционалом
     if (mode === 'manual') {
       enableManualMode();
@@ -313,12 +336,9 @@ function enableManualMode() {
   buttons.forEach(button => {
     button.style.pointerEvents = 'auto';
     button.style.opacity = '1';
-    button.style.position = 'absolute';
+    interactiveDiv.style.position = 'relative';
   });
   
-  // Блокируем выпадающие списки
-  //document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = true);
-
   // Скрываем выпадающие списки
   hideDisplayDropdown();
   hideFlexDirectionDropdown();
@@ -326,21 +346,17 @@ function enableManualMode() {
   hideFlexWrapDropdown();
   hideJustifyVerticalDropdown();
   hideWritingModeDropdown();
-
   }
-
 
 function enableAutoMode() {
   // Отключаем ручное перемещение
   buttons.forEach(button => {
-    button.style.pointerEvents = 'none';
+    button.style.pointerEvents = 'auto';
     button.style.opacity = '0.7';
-    button.style.position = 'inherit';
+  //  button.style.position = 'flex';
+    interactiveDiv.style.position = 'flex';
   });
   
-  // Разблокируем выпадающие списки
-  //document.querySelectorAll<HTMLSelectElement>('.dropdown').forEach(dd => dd.disabled = false);
-
   // Показываем выпадающие списки
   showDisplayDropdown();
   showFlexDirectionDropdown();
@@ -349,6 +365,12 @@ function enableAutoMode() {
   showJustifyVerticalDropdown();
   showWritingModeDropdown();
 
+// Настройка стилей для виджета
+interactiveDiv.style.display = displayDropdown.value;
+interactiveDiv.style.flexDirection = flexDirectionDropdown.value;
+interactiveDiv.style.flexWrap = flexWrapDropdown.value;
+interactiveDiv.style.justifyContent = justifyVerticalDropdown.value;
+interactiveDiv.style.writingMode = writingModeDropdown.value;
 }
 
 // Инициализация начального состояния

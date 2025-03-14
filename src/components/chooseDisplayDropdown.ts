@@ -5,6 +5,8 @@ import {  hideFlexWrapDropdown } from "./hideFlexWrapDropdown";
 import { showJustifyVerticalDropdown} from "./showJustifyVerticalDropdown";
 import { hideJustifyVerticalDropdown } from "./hideJustifyVerticalDropdown";
 import { showJustifyContentDropdown } from "./showJustifyContentDropdown";
+import { showWritingModeDropdown } from "./showWritingModeDropdown";
+import { hideJustifyContentDropdown } from "./hideJustifyContentDropdown";
 export function chooseDisplayDropdown(): void {
     console.log("Choose Display Dropdown done");
     const displayDropdown = document.getElementById("display-dropdown") as HTMLSelectElement;
@@ -27,5 +29,6 @@ export function chooseDisplayDropdown(): void {
       hideFlexWrapDropdown();
       hideFlexDirectionDropdown();
       hideJustifyVerticalDropdown();
-      showJustifyContentDropdown();      
+      hideJustifyContentDropdown();     
+      showWritingModeDropdown 
   }}
