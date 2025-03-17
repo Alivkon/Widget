@@ -1,3 +1,4 @@
+import { showDisplayDropdown } from "./showDisplayDropdown";
 import { showFlexDirectionDropdown} from "./showFlexDirectionDropdown";
 import { hideFlexDirectionDropdown} from "./hideFlexDirectionDropdown";
 import { showFlexWrapDropdown} from "./showFlexWrapDropdown";
@@ -10,6 +11,8 @@ import { hideJustifyContentDropdown } from "./hideJustifyContentDropdown";
 export function chooseDisplayDropdown(): void {
     console.log("Choose Display Dropdown done");
     const displayDropdown = document.getElementById("display-dropdown") as HTMLSelectElement;
+    showDisplayDropdown();
+    showWritingModeDropdown();    
     if (displayDropdown.value === "flex") {
       // Показываем настройки для Flexbox
       showFlexDirectionDropdown();
@@ -26,9 +29,8 @@ export function chooseDisplayDropdown(): void {
 //  } 
   else if (displayDropdown.value === "block" )//|| displayDropdown.value === "inline-block") 
     {
-      hideFlexWrapDropdown();
       hideFlexDirectionDropdown();
+      hideFlexWrapDropdown();
       hideJustifyVerticalDropdown();
-      hideJustifyContentDropdown();     
-      showWritingModeDropdown 
+      hideJustifyContentDropdown();  
   }}

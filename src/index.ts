@@ -358,12 +358,13 @@ function enableAutoMode() {
   });
   
   // Показываем выпадающие списки
-  showDisplayDropdown();
-  showFlexDirectionDropdown();
-  showJustifyContentDropdown();
-  showFlexWrapDropdown();
-  showJustifyVerticalDropdown();
-  showWritingModeDropdown();
+  chooseDisplayDropdown()
+  // showDisplayDropdown();
+  // showFlexDirectionDropdown();
+  // showJustifyContentDropdown();
+  // showFlexWrapDropdown();
+  // showJustifyVerticalDropdown();
+  // showWritingModeDropdown();
 
 // Настройка стилей для виджета
 interactiveDiv.style.display = displayDropdown.value;
